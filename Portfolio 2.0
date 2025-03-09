@@ -1,0 +1,3128 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>vCard - Personal Portfolio</title>
+
+  <!--
+    - favicon
+  -->
+  <link rel="shortcut icon" href="./assets/images/logo.ico" type="image/x-icon">
+
+  <!--
+    - custom css link
+  -->
+  <link rel="stylesheet" href="./assets/css/style.css">
+
+  <!--
+    - google font link
+  -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
+</head>
+<style>
+    /*-----------------------------------*\
+  #style.css
+\*-----------------------------------*/
+
+
+/**
+ * copyright 2022 @codewithsadee
+ */
+
+
+
+
+
+/*-----------------------------------*\
+  #CUSTOM PROPERTY
+\*-----------------------------------*/
+
+:root {
+
+/**
+ * colors
+ */
+
+/* gradient */
+
+--bg-gradient-onyx: linear-gradient(
+  to bottom right, 
+  hsl(240, 1%, 25%) 3%, 
+  hsl(0, 0%, 19%) 97%
+);
+--bg-gradient-jet: linear-gradient(
+  to bottom right, 
+  hsla(240, 1%, 18%, 0.251) 0%, 
+  hsla(240, 2%, 11%, 0) 100%
+), hsl(240, 2%, 13%);
+--bg-gradient-yellow-1: linear-gradient(
+  to bottom right, 
+  hsl(45, 100%, 71%) 0%, 
+  hsla(36, 100%, 69%, 0) 50%
+);
+--bg-gradient-yellow-2: linear-gradient(
+  135deg, 
+  hsla(45, 100%, 71%, 0.251) 0%, 
+  hsla(35, 100%, 68%, 0) 59.86%
+), hsl(240, 2%, 13%);
+--border-gradient-onyx: linear-gradient(
+  to bottom right, 
+  hsl(0, 0%, 25%) 0%, 
+  hsla(0, 0%, 25%, 0) 50%
+);
+--text-gradient-yellow: linear-gradient(
+  to right, 
+  hsl(45, 100%, 72%), 
+  hsl(35, 100%, 68%)
+);
+
+/* solid */
+
+--jet: hsl(0, 0%, 22%);
+--onyx: hsl(240, 1%, 17%);
+--eerie-black-1: hsl(240, 2%, 13%);
+--eerie-black-2: hsl(240, 2%, 12%);
+--smoky-black: hsl(0, 0%, 7%);
+--white-1: hsl(0, 0%, 100%);
+--white-2: hsl(0, 0%, 98%);
+--orange-yellow-crayola: hsl(45, 100%, 72%);
+--vegas-gold: hsl(45, 54%, 58%);
+--light-gray: hsl(0, 0%, 84%);
+--light-gray-70: hsla(0, 0%, 84%, 0.7);
+--bittersweet-shimmer: hsl(0, 43%, 51%);
+
+/**
+ * typography
+ */
+
+/* font-family */
+--ff-poppins: 'Poppins', sans-serif;
+
+/* font-size */
+--fs-1: 24px;
+--fs-2: 18px;
+--fs-3: 17px;
+--fs-4: 16px;
+--fs-5: 15px;
+--fs-6: 14px;
+--fs-7: 13px;
+--fs-8: 11px;
+
+/* font-weight */
+--fw-300: 300;
+--fw-400: 400;
+--fw-500: 500;
+--fw-600: 600;
+
+/**
+ * shadow
+ */
+
+--shadow-1: -4px 8px 24px hsla(0, 0%, 0%, 0.25);
+--shadow-2: 0 16px 30px hsla(0, 0%, 0%, 0.25);
+--shadow-3: 0 16px 40px hsla(0, 0%, 0%, 0.25);
+--shadow-4: 0 25px 50px hsla(0, 0%, 0%, 0.15);
+--shadow-5: 0 24px 80px hsla(0, 0%, 0%, 0.25);
+
+/**
+ * transition
+ */
+
+--transition-1: 0.25s ease;
+--transition-2: 0.5s ease-in-out;
+
+}
+
+
+
+
+
+/*-----------------------------------*\
+#RESET
+\*-----------------------------------*/
+
+*, *::before, *::after {
+margin: 0;
+padding: 0;
+box-sizing: border-box;
+}
+
+a { text-decoration: none; }
+
+li { list-style: none; }
+
+img, ion-icon, a, button, time, span { display: block; }
+
+button {
+font: inherit;
+background: none;
+border: none;
+text-align: left;
+cursor: pointer;
+}
+
+input, textarea {
+display: block;
+width: 100%;
+background: none;
+font: inherit;
+}
+
+::selection {
+background: var(--orange-yellow-crayola);
+color: var(--smoky-black);
+}
+
+:focus { outline-color: var(--orange-yellow-crayola); }
+
+html { font-family: var(--ff-poppins); }
+
+body { background: var(--smoky-black); }
+
+
+
+
+
+/*-----------------------------------*\
+#REUSED STYLE
+\*-----------------------------------*/
+
+.sidebar,
+article {
+background: var(--eerie-black-2);
+border: 1px solid var(--jet);
+border-radius: 20px;
+padding: 15px;
+box-shadow: var(--shadow-1);
+z-index: 1;
+}
+
+.separator {
+width: 100%;
+height: 1px;
+background: var(--jet);
+margin: 16px 0;
+}
+
+.icon-box {
+position: relative;
+background: var(--border-gradient-onyx);
+width: 30px;
+height: 30px;
+border-radius: 8px;
+display: flex;
+justify-content: center;
+align-items: center;
+font-size: 16px;
+color: var(--orange-yellow-crayola);
+box-shadow: var(--shadow-1);
+z-index: 1;
+}
+
+.icon-box::before {
+content: "";
+position: absolute;
+inset: 1px;
+background: var(--eerie-black-1);
+border-radius: inherit;
+z-index: -1;
+}
+
+.icon-box ion-icon { --ionicon-stroke-width: 35px; }
+
+article { display: none; }
+
+article.active {
+display: block;
+animation: fade 0.5s ease backwards;
+}
+
+@keyframes fade {
+0% { opacity: 0; }
+100% { opacity: 1; }
+}
+
+.h2,
+.h3,
+.h4,
+.h5 {
+color: var(--white-2);
+text-transform: capitalize;
+}
+
+.h2 { font-size: var(--fs-1); }
+
+.h3 { font-size: var(--fs-2); }
+
+.h4 { font-size: var(--fs-4); }
+
+.h5 {
+font-size: var(--fs-7);
+font-weight: var(--fw-500);
+}
+
+.article-title {
+position: relative;
+padding-bottom: 7px;
+}
+
+.article-title::after {
+content: "";
+position: absolute;
+bottom: 0;
+left: 0;
+width: 30px;
+height: 3px;
+background: var(--text-gradient-yellow);
+border-radius: 3px;
+}
+
+.has-scrollbar::-webkit-scrollbar {
+width: 5px; /* for vertical scrollbar */
+height: 5px; /* for horizontal scrollbar */
+}
+
+.has-scrollbar::-webkit-scrollbar-track {
+background: var(--onyx);
+border-radius: 5px;
+}
+
+.has-scrollbar::-webkit-scrollbar-thumb {
+background: var(--orange-yellow-crayola);
+border-radius: 5px;
+}
+
+.has-scrollbar::-webkit-scrollbar-button { width: 20px; }
+
+.content-card {
+position: relative;
+background: var(--border-gradient-onyx);
+padding: 15px;
+padding-top: 45px;
+border-radius: 14px;
+box-shadow: var(--shadow-2);
+cursor: pointer;
+z-index: 1;
+}
+
+.content-card::before {
+content: "";
+position: absolute;
+inset: 1px;
+background: var(--bg-gradient-jet);
+border-radius: inherit;
+z-index: -1;
+}
+
+
+
+
+
+/*-----------------------------------*\
+#MAIN
+\*-----------------------------------*/
+
+main {
+margin: 15px 12px;
+margin-bottom: 75px;
+min-width: 259px;
+}
+
+
+
+
+
+/*-----------------------------------*\
+#SIDEBAR
+\*-----------------------------------*/
+
+.sidebar {
+margin-bottom: 15px;
+max-height: 112px;
+overflow: hidden;
+transition: var(--transition-2);
+}
+
+.sidebar.active { max-height: 405px; }
+
+.sidebar-info {
+position: relative;
+display: flex;
+justify-content: flex-start;
+align-items: center;
+gap: 15px;
+}
+
+.avatar-box {
+background: var(--bg-gradient-onyx);
+border-radius: 20px;
+}
+
+.info-content .name {
+color: var(--white-2);
+font-size: var(--fs-3);
+font-weight: var(--fw-500);
+letter-spacing: -0.25px;
+margin-bottom: 10px;
+}
+
+.info-content .title {
+color: var(--white-1);
+background: var(--onyx);
+font-size: var(--fs-8);
+font-weight: var(--fw-300);
+width: max-content;
+padding: 3px 12px;
+border-radius: 8px;
+}
+
+.info_more-btn {
+position: absolute;
+top: -15px;
+right: -15px;
+border-radius: 0 15px;
+font-size: 13px;
+color: var(--orange-yellow-crayola);
+background: var(--border-gradient-onyx);
+padding: 10px;
+box-shadow: var(--shadow-2);
+transition: var(--transition-1);
+z-index: 1;
+}
+
+.info_more-btn::before {
+content: "";
+position: absolute;
+inset: 1px;
+border-radius: inherit;
+background: var(--bg-gradient-jet);
+transition: var(--transition-1);
+z-index: -1;
+}
+
+.info_more-btn:hover,
+.info_more-btn:focus { background: var(--bg-gradient-yellow-1); }
+
+.info_more-btn:hover::before,
+.info_more-btn:focus::before { background: var(--bg-gradient-yellow-2); }
+
+.info_more-btn span { display: none; }
+
+.sidebar-info_more {
+opacity: 0;
+visibility: hidden;
+transition: var(--transition-2);
+}
+
+.sidebar.active .sidebar-info_more {
+opacity: 1;
+visibility: visible;
+}
+
+.contacts-list {
+display: grid;
+grid-template-columns: 1fr;
+gap: 16px;
+}
+
+.contact-item {
+min-width: 100%;
+display: flex;
+align-items: center;
+gap: 16px;
+}
+
+.contact-info {
+max-width: calc(100% - 46px);
+width: calc(100% - 46px);
+}
+
+.contact-title {
+color: var(--light-gray-70);
+font-size: var(--fs-8);
+text-transform: uppercase;
+margin-bottom: 2px;
+}
+
+.contact-info :is(.contact-link, time, address) {
+color: var(--white-2);
+font-size: var(--fs-7);
+}
+
+.contact-info address { font-style: normal; }
+
+.social-list {
+display: flex;
+justify-content: flex-start;
+align-items: center;
+gap: 15px;
+padding-bottom: 4px;
+padding-left: 7px;
+}
+
+.social-item .social-link {
+color: var(--light-gray-70);
+font-size: 18px;
+}
+
+
+.social-item .social-link:hover { color: var(--light-gray); }
+
+
+
+
+
+/*-----------------------------------*\
+#NAVBAR
+\*-----------------------------------*/
+
+.navbar {
+position: fixed;
+bottom: 0;
+left: 0;
+width: 100%;
+background: hsla(240, 1%, 17%, 0.75);
+backdrop-filter: blur(10px);
+border: 1px solid var(--jet);
+border-radius: 12px 12px 0 0;
+box-shadow: var(--shadow-2);
+z-index: 5;
+}
+
+.navbar-list {
+display: flex;
+flex-wrap: wrap;
+justify-content: center;
+align-items: center;
+padding: 0 10px;
+}
+
+.navbar-link {
+color: var(--light-gray);
+font-size: var(--fs-8);
+padding: 20px 7px;
+transition: color var(--transition-1);
+}
+
+.navbar-link:hover,
+.navbar-link:focus { color: var(--light-gray-70); }
+
+.navbar-link.active { color: var(--orange-yellow-crayola); }
+
+
+
+
+
+/*-----------------------------------*\
+#ABOUT
+\*-----------------------------------*/
+
+.about .article-title { margin-bottom: 15px; }
+
+.about-text {
+color: var(--light-gray);
+font-size: var(--fs-6);
+font-weight: var(--fw-300);
+line-height: 1.6;
+}
+
+.about-text p { margin-bottom: 15px; }
+
+
+
+/**
+* #service 
+*/
+
+.service { margin-bottom: 35px; }
+
+.service-title { margin-bottom: 20px; }
+
+.service-list {
+display: grid;
+grid-template-columns: 1fr;
+gap: 20px;
+}
+
+.service-item {
+position: relative;
+background: var(--border-gradient-onyx);
+padding: 20px;
+border-radius: 14px;
+box-shadow: var(--shadow-2);
+z-index: 1;
+}
+
+.service-item::before {
+content: "";
+position: absolute;
+inset: 1px;
+background: var(--bg-gradient-jet);
+border-radius: inherit;
+z-index: -1;
+}
+
+.service-icon-box { margin-bottom: 10px; }
+
+.service-icon-box img { margin: auto; }
+
+.service-content-box { text-align: center; }
+
+.service-item-title { margin-bottom: 7px; }
+
+.service-item-text {
+color: var(--light-gray);
+font-size: var(--fs-6);
+font-weight: var(--fw-3);
+line-height: 1.6;
+}
+
+
+/**
+* #testimonials 
+*/
+
+.testimonials { margin-bottom: 30px; }
+
+.testimonials-title { margin-bottom: 20px; }
+
+.testimonials-list {
+display: flex;
+justify-content: flex-start;
+align-items: flex-start;
+gap: 15px;
+margin: 0 -15px;
+padding: 25px 15px;
+padding-bottom: 35px;
+overflow-x: auto;
+scroll-behavior: smooth;
+overscroll-behavior-inline: contain;
+scroll-snap-type: inline mandatory;
+}
+
+.testimonials-item {
+min-width: 100%;
+scroll-snap-align: center;
+}
+
+.testimonials-avatar-box {
+position: absolute;
+top: 0;
+left: 0;
+transform: translate(15px, -25px);
+background: var(--bg-gradient-onyx);
+border-radius: 14px;
+box-shadow: var(--shadow-1);
+}
+
+.testimonials-item-title { margin-bottom: 7px; }
+
+.testimonials-text {
+color: var(--light-gray);
+font-size: var(--fs-6);
+font-weight: var(--fw-300);
+line-height: 1.6;
+display: -webkit-box;
+line-clamp: 4;
+-webkit-line-clamp: 4;
+-webkit-box-orient: vertical;
+overflow: hidden;
+}
+
+
+/**
+* #testimonials-modal
+*/
+
+.modal-container {
+position: fixed;
+top: 0;
+left: 0;
+width: 100%;
+height: 100%;
+display: flex;
+justify-content: center;
+align-items: center;
+overflow-y: auto;
+overscroll-behavior: contain;
+z-index: 20;
+pointer-events: none;
+visibility: hidden;
+}
+
+.modal-container::-webkit-scrollbar { display: none; }
+
+.modal-container.active {
+pointer-events: all;
+visibility: visible;
+}
+
+.overlay {
+position: fixed;
+top: 0;
+left: 0;
+width: 100%;
+height: 100vh;
+background: hsl(0, 0%, 5%);
+opacity: 0;
+visibility: hidden;
+pointer-events: none;
+z-index: 1;
+transition: var(--transition-1);
+}
+
+.overlay.active {
+opacity: 0.8;
+visibility: visible;
+pointer-events: all;
+}
+
+.testimonials-modal {
+background: var(--eerie-black-2);
+position: relative;
+padding: 15px;
+margin: 15px 12px;
+border: 1px solid var(--jet);
+border-radius: 14px;
+box-shadow: var(--shadow-5);
+transform: scale(1.2);
+opacity: 0;
+transition: var(--transition-1);
+z-index: 2;
+}
+
+.modal-container.active .testimonials-modal {
+transform: scale(1);
+opacity: 1;
+}
+
+.modal-close-btn {
+position: absolute;
+top: 15px;
+right: 15px;
+background: var(--onyx);
+border-radius: 8px;
+width: 32px;
+height: 32px;
+display: flex;
+justify-content: center;
+align-items: center;
+color: var(--white-2);
+font-size: 18px;
+opacity: 0.7;
+}
+
+.modal-close-btn:hover,
+.modal-close-btn:focus { opacity: 1; }
+
+.modal-close-btn ion-icon { --ionicon-stroke-width: 50px; }
+
+.modal-avatar-box {
+background: var(--bg-gradient-onyx);
+width: max-content;
+border-radius: 14px;
+margin-bottom: 15px;
+box-shadow: var(--shadow-2);
+}
+
+.modal-img-wrapper > img { display: none; }
+
+.modal-title { margin-bottom: 4px; }
+
+.modal-content time {
+font-size: var(--fs-6);
+color: var(--light-gray-70);
+font-weight: var(--fw-300);
+margin-bottom: 10px;
+}
+
+.modal-content p {
+color: var(--light-gray);
+font-size: var(--fs-6);
+font-weight: var(--fw-300);
+line-height: 1.6;
+}
+
+
+/**
+* #clients 
+*/
+
+.clients { margin-bottom: 15px; }
+
+.clients-list {
+display: flex;
+justify-content: flex-start;
+align-items: flex-start;
+gap: 15px;
+margin: 0 -15px;
+padding: 25px;
+padding-bottom: 25px;
+overflow-x: auto;
+scroll-behavior: smooth;
+overscroll-behavior-inline: contain;
+scroll-snap-type: inline mandatory;
+scroll-padding-inline: 25px;
+}
+
+.clients-item {
+min-width: 50%;
+scroll-snap-align: start;
+}
+
+.clients-item img {
+width: 100%;
+filter: grayscale(1);
+transition: var(--transition-1);
+}
+
+.clients-item img:hover { filter: grayscale(0); }
+
+
+
+
+
+/*-----------------------------------*\
+#RESUME
+\*-----------------------------------*/
+
+.article-title { margin-bottom: 30px; }
+
+
+/**
+* education and experience 
+*/
+
+.timeline { margin-bottom: 30px; }
+
+.timeline .title-wrapper {
+display: flex;
+align-items: center;
+gap: 15px;
+margin-bottom: 25px;
+}
+
+.timeline-list {
+font-size: var(--fs-6);
+margin-left: 45px;
+}
+
+.timeline-item { position: relative; }
+
+.timeline-item:not(:last-child) { margin-bottom: 20px; }
+
+.timeline-item-title {
+font-size: var(--fs-6);
+line-height: 1.3;
+margin-bottom: 7px;
+}
+
+.timeline-list span {
+color: var(--vegas-gold);
+font-weight: var(--fw-400);
+line-height: 1.6;
+}
+
+.timeline-item:not(:last-child)::before {
+content: "";
+position: absolute;
+top: -25px;
+left: -30px;
+width: 1px;
+height: calc(100% + 50px);
+background: var(--jet);
+}
+
+.timeline-item::after {
+content: "";
+position: absolute;
+top: 5px;
+left: -33px;
+height: 6px;
+width: 6px;
+background: var(--text-gradient-yellow);
+border-radius: 50%;
+box-shadow: 0 0 0 4px var(--jet);
+}
+
+.timeline-text {
+color: var(--light-gray);
+font-weight: var(--fw-300);
+line-height: 1.6;
+}
+
+
+/**
+* skills 
+*/
+
+.skills-title { margin-bottom: 20px; }
+
+.skills-list { padding: 20px; }
+
+
+.skills-item:not(:last-child) { margin-bottom: 15px; }
+
+.skill .title-wrapper {
+display: flex;
+align-items: center;
+gap: 5px;
+margin-bottom: 8px;
+}
+
+.skill .title-wrapper data {
+color: var(--light-gray);
+font-size: var(--fs-7);
+font-weight: var(--fw-300);
+}
+
+.skill-progress-bg {
+background: var(--jet);
+width: 100%;
+height: 8px;
+border-radius: 10px;
+}
+
+.skill-progress-fill {
+background: var(--text-gradient-yellow);
+height: 100%;
+border-radius: inherit;
+}
+
+
+
+
+
+/*-----------------------------------*\
+#PORTFOLIO
+\*-----------------------------------*/
+
+.filter-list { display: none; }
+
+.filter-select-box {
+position: relative;
+margin-bottom: 25px;
+}
+
+.filter-select {
+background: var(--eerie-black-2);
+color: var(--light-gray);
+display: flex;
+justify-content: space-between;
+align-items: center;
+width: 100%;
+padding: 12px 16px;
+border: 1px solid var(--jet);
+border-radius: 14px;
+font-size: var(--fs-6);
+font-weight: var(--fw-300);
+}
+
+.filter-select.active .select-icon { transform: rotate(0.5turn); }
+
+.select-list {
+background: var(--eerie-black-2);
+position: absolute;
+top: calc(100% + 6px);
+width: 100%;
+padding: 6px;
+border: 1px solid var(--jet);
+border-radius: 14px;
+z-index: 2;
+opacity: 0;
+visibility: hidden;
+pointer-events: none;
+transition: 0.15s ease-in-out;
+}
+
+.filter-select.active + .select-list {
+opacity: 1;
+visibility: visible;
+pointer-events: all;
+}
+
+.select-item button {
+background: var(--eerie-black-2);
+color: var(--light-gray);
+font-size: var(--fs-6);
+font-weight: var(--fw-300);
+text-transform: capitalize;
+width: 100%;
+padding: 8px 10px;
+border-radius: 8px;
+}
+
+.select-item button:hover { --eerie-black-2: hsl(240, 2%, 20%); }
+
+.project-list {
+display: grid;
+grid-template-columns: 1fr;
+gap: 30px;
+margin-bottom: 10px;
+}
+
+.project-item { display: none; }
+
+.project-item.active {
+display: block;
+animation: scaleUp 0.25s ease forwards;
+}
+
+@keyframes scaleUp {
+0% { transform: scale(0.5); }
+100% { transform: scale(1); }
+}
+
+.project-item > a { width: 100%; }
+
+.project-img {
+position: relative;
+width: 100%;
+height: 200px;
+border-radius: 16px;
+overflow: hidden;
+margin-bottom: 15px;
+}
+
+.project-img::before {
+content: "";
+position: absolute;
+top: 0;
+left: 0;
+width: 100%;
+height: 100%;
+background: transparent;
+z-index: 1;
+transition: var(--transition-1);
+}
+
+.project-item > a:hover .project-img::before { background: hsla(0, 0%, 0%, 0.5); }
+
+.project-item-icon-box {
+--scale: 0.8;
+
+background: var(--jet);
+color: var(--orange-yellow-crayola);
+position: absolute;
+top: 50%;
+left: 50%;
+transform: translate(-50%, -50%) scale(var(--scale));
+font-size: 20px;
+padding: 18px;
+border-radius: 12px;
+opacity: 0;
+z-index: 1;
+transition: var(--transition-1);
+}
+
+.project-item > a:hover .project-item-icon-box {
+--scale: 1;
+opacity: 1;
+}
+
+.project-item-icon-box ion-icon { --ionicon-stroke-width: 50px; }
+
+.project-img img {
+width: 100%;
+height: 100%;
+object-fit: cover;
+transition: var(--transition-1);
+}
+
+.project-item > a:hover img { transform: scale(1.1); }
+
+.project-title,
+.project-category { margin-left: 10px; }
+
+.project-title {
+color: var(--white-2);
+font-size: var(--fs-5);
+font-weight: var(--fw-400);
+text-transform: capitalize;
+line-height: 1.3;
+}
+
+.project-category {
+color: var(--light-gray-70);
+font-size: var(--fs-6);
+font-weight: var(--fw-300);
+}
+
+
+
+
+
+/*-----------------------------------*\
+#BLOG
+\*-----------------------------------*/
+
+.blog-posts { margin-bottom: 10px; }
+
+.blog-posts-list {
+display: grid;
+grid-template-columns: 1fr;
+gap: 20px;
+}
+
+.blog-post-item > a {
+position: relative;
+background: var(--border-gradient-onyx);
+height: 100%;
+box-shadow: var(--shadow-4);
+border-radius: 16px;
+z-index: 1;
+}
+
+.blog-post-item > a::before {
+content: "";
+position: absolute;
+inset: 1px;
+border-radius: inherit;
+background: var(--eerie-black-1);
+z-index: -1;
+}
+
+.blog-banner-box {
+width: 100%;
+height: 200px;
+border-radius: 12px;
+overflow: hidden;
+}
+
+.blog-banner-box img {
+width: 100%;
+height: 100%;
+object-fit: cover;
+transition: var(--transition-1);
+}
+
+.blog-post-item > a:hover .blog-banner-box img { transform: scale(1.1); }
+
+.blog-content { padding: 15px; }
+
+.blog-meta {
+display: flex;
+justify-content: flex-start;
+align-items: center;
+gap: 7px;
+margin-bottom: 10px;
+}
+
+.blog-meta :is(.blog-category, time) {
+color: var(--light-gray-70);
+font-size: var(--fs-6);
+font-weight: var(--fw-300);
+}
+
+.blog-meta .dot {
+background: var(--light-gray-70);
+width: 4px;
+height: 4px;
+border-radius: 4px;
+}
+
+.blog-item-title {
+margin-bottom: 10px;
+line-height: 1.3;
+transition: var(--transition-1);
+}
+
+.blog-post-item > a:hover .blog-item-title { color: var(--orange-yellow-crayola); }
+
+.blog-text {
+color: var(--light-gray);
+font-size: var(--fs-6);
+font-weight: var(--fw-300);
+line-height: 1.6;
+}
+
+
+
+
+
+/*-----------------------------------*\
+#CONTACT
+\*-----------------------------------*/
+
+.mapbox {
+position: relative;
+height: 250px;
+width: 100%;
+border-radius: 16px;
+margin-bottom: 30px;
+border: 1px solid var(--jet);
+overflow: hidden;
+}
+
+.mapbox figure { height: 100%; }
+
+.mapbox iframe {
+width: 100%;
+height: 100%;
+border: none;
+filter: grayscale(1) invert(1);
+}
+
+.contact-form { margin-bottom: 10px; }
+
+.form-title { margin-bottom: 20px; }
+
+.input-wrapper {
+display: grid;
+grid-template-columns: 1fr;
+gap: 25px;
+margin-bottom: 25px;
+}
+
+.form-input {
+color: var(--white-2);
+font-size: var(--fs-6);
+font-weight: var(--fw-400);
+padding: 13px 20px;
+border: 1px solid var(--jet);
+border-radius: 14px;
+outline: none;
+}
+
+.form-input::placeholder { font-weight: var(--fw-500); }
+
+.form-input:focus { border-color: var(--orange-yellow-crayola); }
+
+textarea.form-input {
+min-height: 100px;
+height: 120px;
+max-height: 200px;
+resize: vertical;
+margin-bottom: 25px;
+}
+
+textarea.form-input::-webkit-resizer { display: none; }
+
+.form-input:focus:invalid { border-color: var(--bittersweet-shimmer); }
+
+.form-btn {
+position: relative;
+width: 100%;
+background: var(--border-gradient-onyx);
+color: var(--orange-yellow-crayola);
+display: flex;
+justify-content: center;
+align-items: center;
+gap: 10px;
+padding: 13px 20px;
+border-radius: 14px;
+font-size: var(--fs-6);
+text-transform: capitalize;
+box-shadow: var(--shadow-3);
+z-index: 1;
+transition: var(--transition-1);
+}
+
+.form-btn::before {
+content: "";
+position: absolute;
+inset: 1px;
+background: var(--bg-gradient-jet);
+border-radius: inherit;
+z-index: -1;
+transition: var(--transition-1);
+}
+
+.form-btn ion-icon { font-size: 16px; }
+
+.form-btn:hover { background: var(--bg-gradient-yellow-1); }
+
+.form-btn:hover::before { background: var(--bg-gradient-yellow-2); }
+
+.form-btn:disabled {
+opacity: 0.7;
+cursor: not-allowed;
+}
+
+.form-btn:disabled:hover { background: var(--border-gradient-onyx); }
+
+.form-btn:disabled:hover::before { background: var(--bg-gradient-jet); }
+
+
+
+
+
+/*-----------------------------------*\
+#RESPONSIVE
+\*-----------------------------------*/
+
+/**
+* responsive larger than 450px screen
+*/
+
+@media (min-width: 450px) {
+
+/**
+ * client
+ */
+
+.clients-item { min-width: calc(33.33% - 10px); }
+
+
+
+/**
+ * #PORTFOLIO, BLOG 
+ */
+
+.project-img,
+.blog-banner-box { height: auto; }
+
+}
+
+
+
+
+
+/**
+* responsive larger than 580px screen
+*/
+
+@media (min-width: 580px) {
+
+/**
+ * CUSTOM PROPERTY
+ */
+
+:root {
+
+  /**
+   * typography
+   */
+
+  --fs-1: 32px;
+  --fs-2: 24px;
+  --fs-3: 26px;
+  --fs-4: 18px;
+  --fs-6: 15px;
+  --fs-7: 15px;
+  --fs-8: 12px;
+
+}
+
+
+
+/**
+ * #REUSED STYLE
+ */
+
+.sidebar, article {
+  width: 520px;
+  margin-inline: auto;
+  padding: 30px;
+}
+
+.article-title {
+  font-weight: var(--fw-600);
+  padding-bottom: 15px;
+}
+
+.article-title::after {
+  width: 40px;
+  height: 5px;
+}
+
+.icon-box {
+  width: 48px;
+  height: 48px;
+  border-radius: 12px;
+  font-size: 18px;
+}
+
+
+
+/**
+ * #MAIN
+ */
+
+main {
+  margin-top: 60px;
+  margin-bottom: 100px;
+}
+
+
+
+/**
+ * #SIDEBAR
+ */
+
+.sidebar {
+  max-height: 180px;
+  margin-bottom: 30px;
+}
+
+.sidebar.active { max-height: 584px; }
+
+.sidebar-info { gap: 25px; }
+
+.avatar-box { border-radius: 30px; }
+
+.avatar-box img { width: 120px; }
+
+.info-content .name { margin-bottom: 15px; }
+
+.info-content .title { padding: 5px 18px; }
+
+.info_more-btn {
+  top: -30px;
+  right: -30px;
+  padding: 10px 15px;
+}
+
+.info_more-btn span {
+  display: block;
+  font-size: var(--fs-8);
+}
+
+.info_more-btn ion-icon { display: none; }
+
+.separator { margin: 32px 0; }
+
+.contacts-list { gap: 20px; }
+
+.contact-info {
+  max-width: calc(100% - 64px);
+  width: calc(100% - 64px);
+}
+
+
+
+/**
+ * #NAVBAR
+ */
+
+.navbar { border-radius: 20px 20px 0 0; }
+
+.navbar-list { gap: 20px; }
+
+.navbar-link { --fs-8: 14px; }
+
+
+
+/**
+ * #ABOUT
+ */
+
+.about .article-title { margin-bottom: 20px; }
+
+.about-text { margin-bottom: 40px; }
+
+/* service */
+
+.service-item {
+  display: flex;
+  justify-content: flex-start;
+  align-items: flex-start;
+  gap: 18px;
+  padding: 30px;
+}
+
+.service-icon-box {
+  margin-bottom: 0;
+  margin-top: 5px;
+}
+
+.service-content-box { text-align: left; }
+
+/* testimonials */
+
+.testimonials-title { margin-bottom: 25px; }
+
+.testimonials-list {
+  gap: 30px;
+  margin: 0 -30px;
+  padding: 30px;
+  padding-bottom: 35px;
+}
+
+.content-card {
+  padding: 30px;
+  padding-top: 25px;
+}
+
+.testimonials-avatar-box {
+  transform: translate(30px, -30px);
+  border-radius: 20px;
+}
+
+.testimonials-avatar-box img { width: 80px; }
+
+.testimonials-item-title {
+  margin-bottom: 10px;
+  margin-left: 95px;
+}
+
+.testimonials-text {
+  line-clamp: 2;
+  -webkit-line-clamp: 2;
+}
+
+/* testimonials modal */
+
+.modal-container { padding: 20px; }
+
+.testimonials-modal {
+  display: flex;
+  justify-content: flex-start;
+  align-items: stretch;
+  gap: 25px;
+  padding: 30px;
+  border-radius: 20px;
+}
+
+.modal-img-wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.modal-avatar-box {
+  border-radius: 18px;
+  margin-bottom: 0;
+}
+
+.modal-avatar-box img { width: 65px; }
+
+.modal-img-wrapper > img {
+  display: block;
+  flex-grow: 1;
+  width: 35px;
+}
+
+/* clients */
+
+.clients-list {
+  gap: 50px;
+  margin: 0 -30px;
+  padding: 45px;
+  scroll-padding-inline: 45px;
+}
+
+.clients-item { min-width: calc(33.33% - 35px); }
+
+
+
+/**
+ * #RESUME
+ */
+
+.timeline-list { margin-left: 65px; }
+
+.timeline-item:not(:last-child)::before { left: -40px; }
+
+.timeline-item::after {
+  height: 8px;
+  width: 8px;
+  left: -43px;
+}
+
+.skills-item:not(:last-child) { margin-bottom: 25px; }
+
+
+
+/**
+ * #PORTFOLIO, BLOG
+ */
+
+.project-img, .blog-banner-box { border-radius: 16px; }
+
+.blog-posts-list { gap: 30px; }
+
+.blog-content { padding: 25px; }
+
+
+
+/**
+ * #CONTACT
+ */
+
+.mapbox {
+  height: 380px;
+  border-radius: 18px;
+}
+
+.input-wrapper {
+  gap: 30px;
+  margin-bottom: 30px;
+}
+
+.form-input { padding: 15px 20px; }
+
+textarea.form-input { margin-bottom: 30px; }
+
+.form-btn {
+  --fs-6: 16px;
+  padding: 16px 20px;
+}
+
+.form-btn ion-icon { font-size: 18px; }
+
+}
+
+
+
+
+
+/**
+* responsive larger than 768px screen
+*/
+
+@media (min-width: 768px) {
+
+/**
+ * REUSED STYLE
+ */
+
+.sidebar, article { width: 700px; }
+
+.has-scrollbar::-webkit-scrollbar-button { width: 100px; }
+
+
+
+/**
+ * SIDEBAR
+ */
+
+.contacts-list {
+  grid-template-columns: 1fr 1fr;
+  gap: 30px 15px;
+}
+
+
+
+/**
+ * NAVBAR
+ */
+
+.navbar-link { --fs-8: 15px; }
+
+
+
+/**
+ * ABOUT
+ */
+
+/* testimonials modal */
+
+.testimonials-modal {
+  gap: 35px;
+  max-width: 680px;
+}
+
+.modal-avatar-box img { width: 80px; }
+
+
+
+/**
+ * PORTFOLIO
+ */
+
+.article-title { padding-bottom: 20px; }
+
+.filter-select-box { display: none; }
+
+.filter-list {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  gap: 25px;
+  padding-left: 5px;
+  margin-bottom: 30px;
+}
+
+.filter-item button {
+  color: var(--light-gray);
+  font-size: var(--fs-5);
+  transition: var(--transition-1);
+}
+
+.filter-item button:hover { color: var(--light-gray-70); }
+
+.filter-item button.active { color: var(--orange-yellow-crayola); }
+
+/* portfolio and blog grid */
+
+.project-list, .blog-posts-list { grid-template-columns: 1fr 1fr; }
+
+
+
+/**
+ * CONTACT
+ */
+
+.input-wrapper { grid-template-columns: 1fr 1fr; }
+
+.form-btn {
+  width: max-content;
+  margin-left: auto;
+}
+
+}
+
+
+
+
+
+/**
+* responsive larger than 1024px screen
+*/
+
+@media (min-width: 1024px) {
+
+/**
+ * CUSTOM PROPERTY
+ */
+
+:root {
+
+  /**
+  * shadow
+  */
+
+  --shadow-1: -4px 8px 24px hsla(0, 0%, 0%, 0.125);
+  --shadow-2: 0 16px 30px hsla(0, 0%, 0%, 0.125);
+  --shadow-3: 0 16px 40px hsla(0, 0%, 0%, 0.125);
+
+}
+
+
+
+/**
+ * REUSED STYLE
+ */
+
+.sidebar, article {
+  width: 950px;
+  box-shadow: var(--shadow-5);
+}
+
+
+
+/**
+ * MAIN 
+ */
+
+main { margin-bottom: 60px; }
+
+.main-content {
+  position: relative;
+  width: max-content;
+  margin: auto;
+}
+
+
+
+/**
+ * NAVBAR
+ */
+
+.navbar {
+  position: absolute;
+  bottom: auto;
+  top: 0;
+  left: auto;
+  right: 0;
+  width: max-content;
+  border-radius: 0 20px;
+  padding: 0 20px;
+  box-shadow: none;
+}
+
+.navbar-list {
+  gap: 30px;
+  padding: 0 20px;
+}
+
+.navbar-link { font-weight: var(--fw-500); }
+
+
+
+/**
+ * ABOUT
+ */
+
+/* service */
+
+.service-list {
+  grid-template-columns: 1fr 1fr;
+  gap: 20px 25px;
+}
+
+/* testimonials */
+
+.testimonials-item { min-width: calc(50% - 15px); }
+
+/* clients */
+
+.clients-item { min-width: calc(25% - 38px); }
+
+
+
+/**
+ * PORTFOLIO
+ */
+
+.project-list { grid-template-columns: repeat(3, 1fr); }
+
+
+
+/**
+ * BLOG
+ */
+
+.blog-banner-box { height: 230px; }
+
+}
+
+
+
+
+
+/**
+* responsive larger than 1250px screen
+*/
+
+@media (min-width: 1250px) {
+
+/**
+ * RESET
+ */
+
+body::-webkit-scrollbar { width: 20px; }
+
+body::-webkit-scrollbar-track { background: var(--smoky-black); }
+
+body::-webkit-scrollbar-thumb {
+  border: 5px solid var(--smoky-black);
+  background: hsla(0, 0%, 100%, 0.1);
+  border-radius: 20px;
+  box-shadow: inset 1px 1px 0 hsla(0, 0%, 100%, 0.11),
+              inset -1px -1px 0 hsla(0, 0%, 100%, 0.11);
+}
+
+body::-webkit-scrollbar-thumb:hover { background: hsla(0, 0%, 100%, 0.15); }
+
+body::-webkit-scrollbar-button { height: 60px; }
+
+
+
+/**
+ * REUSED STYLE
+ */
+
+.sidebar, article { width: auto; }
+
+article { min-height: 100%; }
+
+
+
+/**
+ * MAIN
+ */
+
+main {
+  max-width: 1200px;
+  margin-inline: auto;
+  display: flex;
+  justify-content: center;
+  align-items: stretch;
+  gap: 25px;
+}
+
+.main-content {
+  min-width: 75%;
+  width: 75%;
+  margin: 0;
+}
+
+
+
+/**
+ * SIDEBAR
+ */
+
+.sidebar {
+  position: sticky;
+  top: 60px;
+  max-height: max-content;
+  height: 100%;
+  margin-bottom: 0;
+  padding-top: 60px;
+  z-index: 1;
+}
+
+.sidebar-info { flex-direction: column; }
+
+.avatar-box img { width: 150px; }
+
+.info-content .name {
+  white-space: nowrap;
+  text-align: center;
+}
+
+.info-content .title { margin: auto; }
+
+.info_more-btn { display: none; }
+
+.sidebar-info_more {
+  opacity: 1;
+  visibility: visible;
+}
+
+.contacts-list { grid-template-columns: 1fr; }
+
+.contact-info :is(.contact-link) {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.contact-info :is(.contact-link, time, address) {
+  --fs-7: 14px;
+  font-weight: var(--fw-300);
+}
+
+.separator:last-of-type {
+  margin: 15px 0;
+  opacity: 0;
+}
+
+.social-list { justify-content: center; }
+
+
+
+/**
+   * RESUME
+   */
+
+.timeline-text { max-width: 700px; }
+
+}
+</style>
+<body>
+
+  <!--
+    - #MAIN
+  -->
+
+  <main>
+
+    <!--
+      - #SIDEBAR
+    -->
+
+    <aside class="sidebar" data-sidebar>
+
+      <div class="sidebar-info">
+
+        <figure class="avatar-box">
+          <img src="file:///D:/FRONTEND%20DEVELOPMENT%20CODE/PERSONAL%20PROJECTS/PORRTFOLIO/my-avatar.png" alt="Amandeep Shukla" width="80">
+        </figure>
+
+        <div class="info-content">
+          <h1 class="name" title="Amandeep Shukla">Amandeep Shukla</h1>
+
+          <p class="title">Web developer</p>
+        </div>
+
+        <button class="info_more-btn" data-sidebar-btn>
+          <span>Show Contacts</span>
+
+          <ion-icon name="chevron-down"></ion-icon>
+        </button>
+
+      </div>
+
+      <div class="sidebar-info_more">
+
+        <div class="separator"></div>
+
+        <ul class="contacts-list">
+
+          <li class="contact-item">
+
+            <div class="icon-box">
+              <ion-icon name="mail-outline"></ion-icon>
+            </div>
+
+            <div class="contact-info">
+              <p class="contact-title">Email</p>
+
+              <a href="mailto:amandeepshukla8979.com" class="contact-link">amandeepshukla8979.com</a>
+            </div>
+
+          </li>
+
+          <li class="contact-item">
+
+            <div class="icon-box">
+              <ion-icon name="phone-portrait-outline"></ion-icon>
+            </div>
+
+            <div class="contact-info">
+              <p class="contact-title">Phone</p>
+
+              <a href="tel:+919557932031" class="contact-link">+91 9557932031</a>
+            </div>
+
+          </li>
+
+          <li class="contact-item">
+
+            <div class="icon-box">
+              <ion-icon name="calendar-outline"></ion-icon>
+            </div>
+
+            <div class="contact-info">
+              <p class="contact-title">Birthday</p>
+
+              <time datetime="2006-11-08">November 08, 2006</time>
+            </div>
+
+          </li>
+
+          <li class="contact-item">
+
+            <div class="icon-box">
+              <ion-icon name="location-outline"></ion-icon>
+            </div>
+
+            <div class="contact-info">
+              <p class="contact-title">Location</p>
+
+              <address>Bareilly, Uttar Pradesh, INDIA</address>
+            </div>
+
+          </li>
+
+        </ul>
+
+        <div class="separator"></div>
+
+        <ul class="social-list">
+
+          <li class="social-item">
+            <a href="https://www.facebook.com/share/15VvmNdb4U/" class="social-link">
+              <ion-icon name="logo-facebook"></ion-icon>
+            </a>
+          </li>
+
+          <li class="social-item">
+            <a href="https://x.com/shukla_aman160" class="social-link">
+              <ion-icon name="logo-twitter"></ion-icon>
+            </a>
+          </li>
+
+          <li class="social-item">
+            <a href="https://www.instagram.com/amandeep_shukla?igsh=MXEwaXoxd2JsMW95dw==" class="social-link">
+              <ion-icon name="logo-instagram"></ion-icon>
+            </a>
+          </li>
+
+        </ul>
+
+      </div>
+
+    </aside>
+
+
+
+
+
+    <!--
+      - #main-content
+    -->
+
+    <div class="main-content">
+
+      <!--
+        - #NAVBAR
+      -->
+
+      <nav class="navbar">
+
+        <ul class="navbar-list">
+
+          <li class="navbar-item">
+            <button class="navbar-link  active" data-nav-link>About</button>
+          </li>
+
+          <li class="navbar-item">
+            <button class="navbar-link" data-nav-link>Resume</button>
+          </li>
+
+          <li class="navbar-item">
+            <button class="navbar-link" data-nav-link>Portfolio</button>
+          </li>
+
+          <li class="navbar-item">
+            <button class="navbar-link" data-nav-link>Blog</button>
+          </li>
+
+          <li class="navbar-item">
+            <button class="navbar-link" data-nav-link>Contact</button>
+          </li>
+
+        </ul>
+
+      </nav>
+
+
+
+
+
+      <!--
+        - #ABOUT
+      -->
+
+      <article class="about  active" data-page="about">
+
+        <header>
+          <h2 class="h2 article-title">About me</h2>
+        </header>
+
+        <section class="about-text">
+          <p> I am Amandeep Shukla, native of Bareilly and a student of Invertis University, pursuing my BCA degree. I will be sharing my experiences, thoughts, and ideas on this blog. This platform will give you insights into my journey, interests, and perspectives.</p>
+
+          <p>
+            My aspiration is to build your website so that it is functional and user-friendly but at the same time attractive.
+            Moreover, I
+            add personal touch to your product and make sure that is eye-catching and easy to use. My aim is to bring
+            across your
+            message and identity in the most creative way. I created web design for many famous brand companies.
+          </p>
+        </section>
+
+
+        <!--
+          - service
+        -->
+
+        <section class="service">
+
+          <h3 class="h3 service-title">What i'm doing</h3>
+
+          <ul class="service-list">
+
+            <li class="service-item">
+
+              <div class="service-icon-box">
+                <img src="file:///D:/FRONTEND%20DEVELOPMENT%20CODE/PERSONAL%20PROJECTS/PORRTFOLIO/icon-design.svg
+                " alt="design icon" width="40">
+              </div>
+
+              <div class="service-content-box">
+                <h4 class="h4 service-item-title">Web design</h4>
+
+                <p class="service-item-text">
+                  The most modern and high-quality design made at a professional level.
+                </p>
+              </div>
+
+            </li>
+
+            <li class="service-item">
+
+              <div class="service-icon-box">
+                <img src="file:///D:/FRONTEND%20DEVELOPMENT%20CODE/PERSONAL%20PROJECTS/PORRTFOLIO/icon-dev.svg" alt="Web development icon" width="40">
+              </div>
+
+              <div class="service-content-box">
+                <h4 class="h4 service-item-title">Web development</h4>
+
+                <p class="service-item-text">
+                  High-quality development of sites at the professional level.
+                </p>
+              </div>
+
+            </li>
+
+            <li class="service-item">
+
+              <div class="service-icon-box">
+                <img src="file:///D:/FRONTEND%20DEVELOPMENT%20CODE/PERSONAL%20PROJECTS/PORRTFOLIO/icon-app.svg" alt="mobile app icon" width="40">
+              </div>
+
+              <div class="service-content-box">
+                <h4 class="h4 service-item-title">Mobile apps</h4>
+
+                <p class="service-item-text">
+                  Professional development of applications for iOS and Android.
+                </p>
+              </div>
+
+            </li>
+
+            <li class="service-item">
+
+              <div class="service-icon-box">
+                <img src="file:///D:/FRONTEND%20DEVELOPMENT%20CODE/PERSONAL%20PROJECTS/PORRTFOLIO/icon-photo.svg" alt="camera icon" width="40">
+              </div>
+
+              <div class="service-content-box">
+                <h4 class="h4 service-item-title">Photography</h4>
+
+                <p class="service-item-text">
+                  I make high-quality photos of any category at a professional level.
+                </p>
+              </div>
+
+            </li>
+
+          </ul>
+
+        </section>
+
+
+        <!--
+          - testimonials
+        -->
+
+        <section class="testimonials">
+
+          <h3 class="h3 testimonials-title">Testimonials</h3>
+
+          <ul class="testimonials-list has-scrollbar">
+
+            <li class="testimonials-item">
+              <div class="content-card" data-testimonials-item>
+
+                <figure class="testimonials-avatar-box">
+                  <img src="file:///D:/college/4th%20sem/Screenshot_2025_0307_200138.jpg" alt="Akhilesh Mishra" width="60" data-testimonials-avatar>
+                </figure>
+
+                <h4 class="h4 testimonials-item-title" data-testimonials-title>Akhilesh Mishra</h4>
+
+                <div class="testimonials-text" data-testimonials-text>
+                  <p>
+                    Akhilesh Sir is an exceptional trainer and a highly skilled professional in the field of web development and Python programming. With over a decade of experience, he has established himself as a seasoned expert, guiding countless students and professionals toward mastering the intricacies of coding and web technologies. His deep knowledge, passion for teaching, and ability to simplify complex concepts make him a standout mentor in the tech industry.</p>
+                </div>
+
+              </div>
+            </li>
+
+            <li class="testimonials-item">
+              <div class="content-card" data-testimonials-item>
+
+                <figure class="testimonials-avatar-box">
+                  <img src="file:///D:/college/4th%20sem/Screenshot_2025_0307_195901.jpg" alt="Ritik dwivedi" width="60" data-testimonials-avatar>
+                </figure>
+
+                <h4 class="h4 testimonials-item-title" data-testimonials-title>Ritik dwivedi</h4>
+
+                <div class="testimonials-text" data-testimonials-text>
+                  <p>
+                    Ritik Sir is an exceptional trainer and a highly skilled professional in the field of web development and Python programming. With over six years of experience, he has established himself as a knowledgeable and dedicated expert in his domain. His passion for teaching and his ability to simplify complex concepts make him an invaluable mentor for anyone looking to excel in web development or Python. </p>
+                </div>
+
+              </div>
+            </li>
+
+            <li class="testimonials-item">
+              <div class="content-card" data-testimonials-item>
+
+                <figure class="testimonials-avatar-box">
+                  <img src="C:\Users\asus\Downloads\104frt_akash.webp" alt="Akash Sangh" width="60" data-testimonials-avatar>
+                </figure>
+
+                <h4 class="h4 testimonials-item-title" data-testimonials-title>Akash Sangh</h4>
+
+                <div class="testimonials-text" data-testimonials-text>
+                  <p>
+                    Dr. Akash Sanghi is a highly accomplished and dedicated academic professional serving as the Head of the Department (HOD) of Computer Applications. With an impressive academic background and over 15 years of extensive experience in the field of computer science and software engineering, Dr. Sanghi has established himself as a visionary leader and an inspiring mentor.</p>
+                </div>
+
+              </div>
+            </li>
+
+            <li class="testimonials-item">
+              <div class="content-card" data-testimonials-item>
+
+                <figure class="testimonials-avatar-box">
+                  <img src="C:\Users\asus\Downloads\123frt_Shidharthpandey.webp" alt="Siddharth Pandey" width="60" data-testimonials-avatar>
+                </figure>
+
+                <h4 class="h4 testimonials-item-title" data-testimonials-title>Siddharth Pandey</h4>
+
+                <div class="testimonials-text" data-testimonials-text>
+                  <p>
+                    Siddharth Pandey is a highly accomplished and dedicated professional in the field of Computer Applications, with an impressive academic background and over 15 years of extensive experience. His qualifications include an MCA (Master of Computer Applications), M.Tech. (Master of Technology), MBA in Information Technology (IT), and he is currently pursuing his Ph.D., showcasing his unwavering commitment to academic excellence and lifelong learning.</p>
+                </div>
+
+              </div>
+            </li>
+
+          </ul>
+
+        </section>
+
+
+        <!--
+          - testimonials modal
+        -->
+
+        <div class="modal-container" data-modal-container>
+
+          <div class="overlay" data-overlay></div>
+
+          <section class="testimonials-modal">
+
+            <button class="modal-close-btn" data-modal-close-btn>
+              <ion-icon name="close-outline"></ion-icon>
+            </button>
+
+            <div class="modal-img-wrapper">
+              <figure class="modal-avatar-box">
+                <img src="D:\FRONTEND DEVELOPMENT CODE\PERSONAL PROJECTS\PORRTFOLIO\avatar-1.png" alt="Akhilesh Mishra" width="80" data-modal-img>
+              </figure>
+
+              <img src="D:\FRONTEND DEVELOPMENT CODE\PERSONAL PROJECTS\PORRTFOLIO\avatar-1.png" alt="quote icon">
+            </div>
+
+            <div class="modal-content">
+
+              <h4 class="h3 modal-title" data-modal-title>Akhilesh Mishra</h4>
+
+              <time datetime="2021-06-14">14 June, 2021</time>
+
+              <div data-modal-text>
+                <p>
+                    Akhilesh Sir is an exceptional trainer and a highly skilled professional in the field of web development and Python programming. With over a decade of experience, he has established himself as a seasoned expert, guiding countless students and professionals toward mastering the intricacies of coding and web technologies. His deep knowledge, passion for teaching, and ability to simplify complex concepts make him a standout mentor in the tech industry.
+                </p>
+              </div>
+
+            </div>
+
+          </section>
+
+        </div>
+
+
+        <!--
+          - clients
+        -->
+
+        <section class="clients">
+
+          <h3 class="h3 clients-title">Clients</h3>
+
+          <ul class="clients-list has-scrollbar">
+
+            <li class="clients-item">
+              <a href="https://www.linkedin.com/">
+                <img src=" .jpg" alt="client logo">
+              </a>
+            </li>
+
+            <li class="clients-item">
+              <a href="https://www.linkedin.com/">
+                <img src="6.jpg" alt="client logo">
+              </a>
+            </li>
+
+            <li class="clients-item">
+              <a href="https://www.linkedin.com/">
+                <img src="0d9cf3.jpg" alt="client logo">
+              </a>
+            </li>
+
+            <li class="clients-item">
+              <a href="https://www.linkedin.com/">
+                <img src=" 4.jpg" alt="client logo">
+              </a>
+            </li>
+
+            <li class="clients-item">
+              <a href="https://www.linkedin.com/">
+                <img src=".jpg" alt="client logo">
+              </a>
+            </li>
+
+            <li class="clients-item">
+              <a href="https://www.linkedin.com/">
+                <img src="bcbe.jpg" alt="client logo">
+              </a>
+            </li>
+
+          </ul>
+
+        </section>
+
+      </article>
+
+
+
+
+
+      <!--
+        - #RESUME
+      -->
+
+      <article class="resume" data-page="resume">
+
+        <header>
+          <h2 class="h2 article-title">Resume</h2>
+        </header>
+
+        <section class="timeline">
+
+          <div class="title-wrapper">
+            <div class="icon-box">
+              <ion-icon name="book-outline"></ion-icon>
+            </div>
+
+            <h3 class="h3">Education</h3>
+          </div>
+
+          <ol class="timeline-list">
+
+            <li class="timeline-item">
+
+              <h4 class="h4 timeline-item-title">Invertis University</h4>
+
+              <span>2023 — 2026</span>
+
+              <p class="timeline-text">
+                BCA (Bachelor of Computer Applications) is a three-year undergraduate degree course that is divided into six semesters. It is a course that is meant for students who have a good understanding of computer applications and wish to make a career in the field of computer applications.
+              </p>
+
+            </li>
+
+            <li class="timeline-item">
+
+              <h4 class="h4 timeline-item-title">Senior Secondary</h4>
+
+              <span>2022 — 2023</span>
+
+              <p class="timeline-text">
+                12th standard is the last stage of a student's school life. After the 12th standard, I has to decide my path and my career. This is the first step to the career of a student.
+              </p>
+
+            </li>
+
+            <li class="timeline-item">
+
+              <h4 class="h4 timeline-item-title">High school</h4>
+
+              <span>2020 — 2021</span>
+
+              <p class="timeline-text">
+                10th standard is the first stage of a student's school life. After the 10th standard, I has to decide my path and my career. This is the first step to the career of a student.
+              </p>
+
+            </li>
+
+          </ol>
+
+        </section>
+
+        <section class="timeline">
+
+          <div class="title-wrapper">
+            <div class="icon-box">
+              <ion-icon name="book-outline"></ion-icon>
+            </div>
+
+            <h3 class="h3">Experience</h3>
+          </div>
+
+          <ol class="timeline-list">
+
+            <li class="timeline-item">
+
+              <h4 class="h4 timeline-item-title">Web Designing</h4>
+
+              <span>2024 — Present</span>
+
+              <p class="timeline-text">
+                Web design encompasses many different skills and disciplines in the production and maintenance of websites. The different areas of web design include web graphic design; user interface design; authoring, including standardized code and proprietary software; user experience design; and search engine optimization.
+              </p>
+
+            </li>
+
+            <li class="timeline-item">
+
+              <h4 class="h4 timeline-item-title">Programming Languages</h4>
+
+              <span>2023 — 2024</span>
+
+              <p class="timeline-text">
+                A programming language is a formal language comprising a set of instructions that produce various kinds of output. Programming languages are used in computer programming to implement algorithms.
+              </p>
+
+            </li>
+
+            <li class="timeline-item">
+
+              <h4 class="h4 timeline-item-title">C++</h4>
+
+              <span>2023 — 2024</span>
+
+              <p class="timeline-text">
+                C++ is a general-purpose programming language created by Bjarne Stroustrup as an extension of the C programming language, or "C with Classes". The language has expanded significantly over time, and modern C++ now has object-oriented, generic, and functional features in addition to facilities for low-level memory manipulation.
+              </p>
+
+            </li>
+
+          </ol>
+
+        </section>
+
+        <section class="skill">
+
+          <h3 class="h3 skills-title">My skills</h3>
+
+          <ul class="skills-list content-card">
+
+            <li class="skills-item">
+
+              <div class="title-wrapper">
+                <h5 class="h5">Web design</h5>
+                <data value="80">80%</data>
+              </div>
+
+              <div class="skill-progress-bg">
+                <div class="skill-progress-fill" style="width: 80%;"></div>
+              </div>
+
+            </li>
+
+            <li class="skills-item">
+
+              <div class="title-wrapper">
+                <h5 class="h5">Coding </h5>
+                <data value="70">70%</data>
+              </div>
+
+              <div class="skill-progress-bg">
+                <div class="skill-progress-fill" style="width: 70%;"></div>
+              </div>
+
+            </li>
+
+            <li class="skills-item">
+
+              <div class="title-wrapper">
+                <h5 class="h5">Editing</h5>
+                <data value="90">90%</data>
+              </div>
+
+              <div class="skill-progress-bg">
+                <div class="skill-progress-fill" style="width: 90%;"></div>
+              </div>
+
+            </li>
+
+            <li class="skills-item">
+
+              <div class="title-wrapper">
+                <h5 class="h5">WordPress</h5>
+                <data value="50">50%</data>
+              </div>
+
+              <div class="skill-progress-bg">
+                <div class="skill-progress-fill" style="width: 50%;"></div>
+              </div>
+
+            </li>
+
+          </ul>
+
+        </section>
+
+      </article>
+
+
+
+
+
+      <!--
+        - #PORTFOLIO
+      -->
+
+      <article class="portfolio" data-page="portfolio">
+
+        <header>
+          <h2 class="h2 article-title">Portfolio</h2>
+        </header>
+
+        <section class="projects">
+
+          <ul class="filter-list">
+
+            <li class="filter-item">
+              <button class="active" data-filter-btn>All</button>
+            </li>
+
+            <li class="filter-item">
+              <button data-filter-btn>Web design</button>
+            </li>
+
+            <li class="filter-item">
+              <button data-filter-btn>Applications</button>
+            </li>
+
+            <li class="filter-item">
+              <button data-filter-btn>Web development</button>
+            </li>
+
+          </ul>
+
+          <div class="filter-select-box">
+
+            <button class="filter-select" data-select>
+
+              <div class="select-value" data-selecct-value>Select category</div>
+
+              <div class="select-icon">
+                <ion-icon name="chevron-down"></ion-icon>
+              </div>
+
+            </button>
+
+            <ul class="select-list">
+
+              <li class="select-item">
+                <button data-select-item>All</button>
+              </li>
+
+              <li class="select-item">
+                <button data-select-item>Web design</button>
+              </li>
+
+              <li class="select-item">
+                <button data-select-item>Applications</button>
+              </li>
+
+              <li class="select-item">
+                <button data-select-item>Web development</button>
+              </li>
+
+            </ul>
+
+          </div>
+
+          <ul class="project-list">
+
+            <li class="project-item  active" data-filter-item data-category="web development">
+              <a href="#">
+
+                <figure class="project-img">
+                  <div class="project-item-icon-box">
+                    <ion-icon name="eye-outline"></ion-icon>
+                  </div>
+
+                  <img src="D:\FRONTEND DEVELOPMENT CODE\PERSONAL PROJECTS\Screenshot 2025-03-09 122521.png" alt="E commerce site" loading="lazy">
+                </figure>
+
+                <h3 class="project-title">E commerce</h3>
+
+                <p class="project-category">Web development</p>
+
+              </a>
+            </li>
+
+            <li class="project-item  active" data-filter-item data-category="web development">
+              <a href="#">
+
+                <figure class="project-img">
+                  <div class="project-item-icon-box">
+                    <ion-icon name="eye-outline"></ion-icon>
+                  </div>
+
+                  <img src="D:\FRONTEND DEVELOPMENT CODE\PERSONAL PROJECTS\Screenshot 2025-03-09 125535.png" alt="orizon" loading="lazy">
+                </figure>
+
+                <h3 class="project-title">Booking Site</h3>
+
+                <p class="project-category">Web development</p>
+
+              </a>
+            </li>
+
+            <li class="project-item  active" data-filter-item data-category="web design">
+              <a href="#">
+
+                <figure class="project-img">
+                  <div class="project-item-icon-box">
+                    <ion-icon name="eye-outline"></ion-icon>
+                  </div>
+
+                  <img src="D:\FRONTEND DEVELOPMENT CODE\PERSONAL PROJECTS\GAMES\Screenshot 2025-03-09 165952.png" alt="Game" loading="lazy">
+                </figure>
+
+                <h3 class="project-title">Game</h3>
+
+                <p class="project-category">Web design</p>
+
+              </a>
+            </li>
+
+            <li class="project-item  active" data-filter-item data-category="applications">
+              <a href="#">
+
+                <figure class="project-img">
+                  <div class="project-item-icon-box">
+                    <ion-icon name="eye-outline"></ion-icon>
+                  </div>
+
+                  <img src="D:\FRONTEND DEVELOPMENT CODE\PERSONAL PROJECTS\GAMES\Screenshot 2025-03-09 171107.png" alt="number Game" loading="lazy">
+                </figure>
+
+                <h3 class="project-title">Number game</h3>
+
+                <p class="project-category">Applications</p>
+
+              </a>
+            </li>
+
+            <li class="project-item  active" data-filter-item data-category="web design">
+              <a href="#">
+
+                <figure class="project-img">
+                  <div class="project-item-icon-box">
+                    <ion-icon name="eye-outline"></ion-icon>
+                  </div>
+
+                  <img src="D:\FRONTEND DEVELOPMENT CODE\PERSONAL PROJECTS\PORRTFOLIO\Screenshot 2025-03-09 172658.png" alt="Loading site" loading="lazy">
+                </figure>
+
+                <h3 class="project-title">Loading site</h3>
+
+                <p class="project-category">Web design</p>
+
+              </a>
+            </li>
+
+            
+          </ul>
+
+        </section>
+
+      </article>
+
+
+
+
+
+      <!--
+        - #BLOG
+      -->
+
+      <article class="blog" data-page="blog">
+
+        <header>
+          <h2 class="h2 article-title">Blog</h2>
+        </header>
+
+        <section class="blog-posts">
+
+          <ul class="blog-posts-list">
+
+            <li class="blog-post-item">
+              <a href="https://www.bbc.com/travel">
+
+                <figure class="blog-banner-box">
+                  <img src="D:\college\4th sem\IMG_20250308_133625.jpg" alt="Treval conferences in 2022" loading="lazy">
+                </figure>
+
+                <div class="blog-content">
+
+                  <div class="blog-meta">
+                    <p class="blog-category">Treval</p>
+
+                    <span class="dot"></span>
+
+                    <time datetime="2022-02-23">Mar 09, 2025</time>
+                  </div>
+
+                  <h3 class="h3 blog-item-title">Treval conferences</h3>
+
+                  <p class="blog-text">
+                    Journey through breathtaking destinations, travel tips, and cultural experiences from around the world.</p>
+
+                </div>
+
+              </a>
+            </li>
+
+            <li class="blog-post-item">
+              <a href="https://www.vogue.com/fashion">
+
+                <figure class="blog-banner-box">
+                  <img src="D:\college\4th sem\IMG_20250308_134034.jpg"alt="fashion" loading="lazy">
+                </figure>
+
+                <div class="blog-content">
+
+                  <div class="blog-meta">
+                    <p class="blog-category">Fashion</p>
+
+                    <span class="dot"></span>
+
+                    <time datetime="2022-02-23">Mar 09, 2025</time>
+                  </div>
+
+                  <h3 class="h3 blog-item-title">Fashion</h3>
+
+                  <p class="blog-text">
+                    Stay updated with fashion trends, style tips, and sustainable clothing choices for the modern wardrobe.</p>
+
+                </div>
+
+              </a>
+            </li>
+
+            <li class="blog-post-item">
+              <a href="https://www.medicalnewstoday.com/">
+
+                <figure class="blog-banner-box">
+                  <img src="D:\college\4th sem\Picsart_25-03-08_14-23-33-311.jpg" alt="Health" loading="lazy">
+                </figure>
+
+                <div class="blog-content">
+
+                  <div class="blog-meta">
+                    <p class="blog-category">Health</p>
+
+                    <span class="dot"></span>
+
+                    <time datetime="2022-02-23">Mar 09, 2025</time>
+                  </div>
+
+                  <h3 class="h3 blog-item-title">Health</h3>
+
+                  <p class="blog-text">
+                    Learn about wellness practices, fitness routines, and health insights to enhance your well-being.</p>
+
+                </div>
+
+              </a>
+            </li>
+
+            <li class="blog-post-item">
+              <a href="https://education.nationalgeographic.org/resource/food/">
+
+                <figure class="blog-banner-box">
+                  <img src="D:\college\4th sem\IMG_20250308_142615.jpg" alt="Lifestyle" loading="lazy">
+                </figure>
+
+                <div class="blog-content">
+
+                  <div class="blog-meta">
+                    <p class="blog-category">Lifestyle</p>
+
+                    <span class="dot"></span>
+
+                    <time datetime="2022-02-23">Mar 09, 2025</time>
+                  </div>
+
+                  <h3 class="h3 blog-item-title">Lifestyle</h3>
+
+                  <p class="blog-text">
+                    Discover tips for better living, personal growth, and finding balance in today's fast-paced world.</p>
+
+                </div>
+
+              </a>
+            </li>
+
+            <li class="blog-post-item">
+              <a href="https://education.nationalgeographic.org/resource/food/">
+
+                <figure class="blog-banner-box">
+                  <img src="D:\college\4th sem\Picsart_25-03-08_14-18-04-380.jpg" alt="food" loading="lazy">
+                </figure>
+
+                <div class="blog-content">
+
+                  <div class="blog-meta">
+                    <p class="blog-category">Food</p>
+
+                    <span class="dot"></span>
+
+                    <time datetime="2022-02-23">Mar 09, 2025</time>
+                  </div>
+
+                  <h3 class="h3 blog-item-title">food</h3>
+
+                  <p class="blog-text">
+                    Delve into delicious recipes, culinary adventures, and food culture from every corner of the globe.</p>
+
+                </div>
+
+              </a>
+            </li>
+
+            <li class="blog-post-item">
+              <a href="https://www.newscientist.com/subject/technology/">
+
+                <figure class="blog-banner-box">
+                  <img src="D:\college\4th sem\Picsart_25-03-08_13-46-26-310.jpg" alt="Technology" loading="lazy">
+                </figure>
+
+                <div class="blog-content">
+
+                  <div class="blog-meta">
+                    <p class="blog-category">Technology</p>
+
+                    <span class="dot"></span>
+
+                    <time datetime="2022-02-23">Mar 09, 2025</time>
+                  </div>
+
+                  <h3 class="h3 blog-item-title">Technology</h3>
+
+                  <p class="blog-text">
+                    Explore the latest tech trends, innovations, and digital transformations shaping our future.</p>
+
+                </div>
+
+              </a>
+            </li>
+
+          </ul>
+
+        </section>
+
+      </article>
+
+
+
+
+
+      <!--
+        - #CONTACT
+      -->
+
+      <article class="contact" data-page="contact">
+
+        <header>
+          <h2 class="h2 article-title">Contact</h2>
+        </header>
+
+        <section class="mapbox" data-mapbox>
+          <figure>
+            <iframe
+              src="https://www.google.com/maps/embed?pb=28.3647911,79.3973304/Katghar,+Bareilly,+Uttar+Pradesh,+India/@28.3660971,79.395254,17z/data=!3m1!4b1!4m18!1m8!3m7!1s0x39a0074670dafda5:0xabeb4d6b92b59d6d!2sKatghar,+Bareilly,+Uttar+Pradesh!3b1!8m2!3d28.3673525!4d79.3979383!16s%2Fg%2F1jkykr5x8!4m8!1m1!4e1!1m5!1m1!1s0x39a0074670dafda5:0xabeb4d6b92b59d6d!2m2!1d79.3979383!2d28.3673525?entry=ttu&g_ep=EgoyMDI1MDMwNC4wIKXMDSoASAFQAw%3D%3D"
+              width="400" height="300" loading="lazy"></iframe>
+          </figure>
+        </section>
+
+        <section class="contact-form">
+
+          <h3 class="h3 form-title">Contact Form</h3>
+
+          <form action="#" class="form" data-form>
+
+            <div class="input-wrapper">
+              <input type="text" name="fullname" class="form-input" placeholder="Full name" required data-form-input>
+
+              <input type="email" name="email" class="form-input" placeholder="Email address" required data-form-input>
+            </div>
+
+            <textarea name="message" class="form-input" placeholder="Your Message" required data-form-input></textarea>
+
+            <button class="form-btn" type="submit" disabled data-form-btn>
+              <ion-icon name="paper-plane"></ion-icon>
+              <span>Send Message</span>
+            </button>
+
+          </form>
+
+        </section>
+
+      </article>
+
+    </div>
+
+  </main>
+
+
+
+
+
+
+  <!--
+    - custom js link
+  -->
+  <script src="./assets/js/script.js"></script>
+
+  <!--
+    - ionicon link
+  -->
+  <script type="module" src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"></script>
+  <script nomodule src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js"></script>
+  <script>
+    'use strict';
+
+
+
+// element toggle function
+const elementToggleFunc = function (elem) { elem.classList.toggle("active"); }
+
+
+
+// sidebar variables
+const sidebar = document.querySelector("[data-sidebar]");
+const sidebarBtn = document.querySelector("[data-sidebar-btn]");
+
+// sidebar toggle functionality for mobile
+sidebarBtn.addEventListener("click", function () { elementToggleFunc(sidebar); });
+
+
+
+// testimonials variables
+const testimonialsItem = document.querySelectorAll("[data-testimonials-item]");
+const modalContainer = document.querySelector("[data-modal-container]");
+const modalCloseBtn = document.querySelector("[data-modal-close-btn]");
+const overlay = document.querySelector("[data-overlay]");
+
+// modal variable
+const modalImg = document.querySelector("[data-modal-img]");
+const modalTitle = document.querySelector("[data-modal-title]");
+const modalText = document.querySelector("[data-modal-text]");
+
+// modal toggle function
+const testimonialsModalFunc = function () {
+  modalContainer.classList.toggle("active");
+  overlay.classList.toggle("active");
+}
+
+// add click event to all modal items
+for (let i = 0; i < testimonialsItem.length; i++) {
+
+  testimonialsItem[i].addEventListener("click", function () {
+
+    modalImg.src = this.querySelector("[data-testimonials-avatar]").src;
+    modalImg.alt = this.querySelector("[data-testimonials-avatar]").alt;
+    modalTitle.innerHTML = this.querySelector("[data-testimonials-title]").innerHTML;
+    modalText.innerHTML = this.querySelector("[data-testimonials-text]").innerHTML;
+
+    testimonialsModalFunc();
+
+  });
+
+}
+
+// add click event to modal close button
+modalCloseBtn.addEventListener("click", testimonialsModalFunc);
+overlay.addEventListener("click", testimonialsModalFunc);
+
+
+
+// custom select variables
+const select = document.querySelector("[data-select]");
+const selectItems = document.querySelectorAll("[data-select-item]");
+const selectValue = document.querySelector("[data-selecct-value]");
+const filterBtn = document.querySelectorAll("[data-filter-btn]");
+
+select.addEventListener("click", function () { elementToggleFunc(this); });
+
+// add event in all select items
+for (let i = 0; i < selectItems.length; i++) {
+  selectItems[i].addEventListener("click", function () {
+
+    let selectedValue = this.innerText.toLowerCase();
+    selectValue.innerText = this.innerText;
+    elementToggleFunc(select);
+    filterFunc(selectedValue);
+
+  });
+}
+
+// filter variables
+const filterItems = document.querySelectorAll("[data-filter-item]");
+
+const filterFunc = function (selectedValue) {
+
+  for (let i = 0; i < filterItems.length; i++) {
+
+    if (selectedValue === "all") {
+      filterItems[i].classList.add("active");
+    } else if (selectedValue === filterItems[i].dataset.category) {
+      filterItems[i].classList.add("active");
+    } else {
+      filterItems[i].classList.remove("active");
+    }
+
+  }
+
+}
+
+// add event in all filter button items for large screen
+let lastClickedBtn = filterBtn[0];
+
+for (let i = 0; i < filterBtn.length; i++) {
+
+  filterBtn[i].addEventListener("click", function () {
+
+    let selectedValue = this.innerText.toLowerCase();
+    selectValue.innerText = this.innerText;
+    filterFunc(selectedValue);
+
+    lastClickedBtn.classList.remove("active");
+    this.classList.add("active");
+    lastClickedBtn = this;
+
+  });
+
+}
+
+
+
+// contact form variables
+const form = document.querySelector("[data-form]");
+const formInputs = document.querySelectorAll("[data-form-input]");
+const formBtn = document.querySelector("[data-form-btn]");
+
+// add event to all form input field
+for (let i = 0; i < formInputs.length; i++) {
+  formInputs[i].addEventListener("input", function () {
+
+    // check form validation
+    if (form.checkValidity()) {
+      formBtn.removeAttribute("disabled");
+    } else {
+      formBtn.setAttribute("disabled", "");
+    }
+
+  });
+}
+
+
+
+// page navigation variables
+const navigationLinks = document.querySelectorAll("[data-nav-link]");
+const pages = document.querySelectorAll("[data-page]");
+
+// add event to all nav link
+for (let i = 0; i < navigationLinks.length; i++) {
+  navigationLinks[i].addEventListener("click", function () {
+
+    for (let i = 0; i < pages.length; i++) {
+      if (this.innerHTML.toLowerCase() === pages[i].dataset.page) {
+        pages[i].classList.add("active");
+        navigationLinks[i].classList.add("active");
+        window.scrollTo(0, 0);
+      } else {
+        pages[i].classList.remove("active");
+        navigationLinks[i].classList.remove("active");
+      }
+    }
+
+  });
+}
+  </script>
+</body>
+
+</html>
