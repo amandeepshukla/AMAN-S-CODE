@@ -1,0 +1,527 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Number Guessing Game</title>
+    <style>
+      /* General Styling */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+/* Updated background with sRGB color space */
+body {
+    /* Using modern sRGB gradient with futuristic colors */
+    background: linear-gradient(135deg, #0c1e59, #2a0845);
+    background-color: #0c1e59; /* Fallback */
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: #333;
+    overflow-x: hidden; /* Prevent horizontal scrolling */
+}
+
+/* Loading Screen */
+#loading-screen {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(12, 30, 89, 0.95); /* Semi-transparent background */
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+    transition: opacity 0.8s ease;
+    color: white;
+    perspective: 1000px; /* For 3D effect */
+}
+
+/* Removed old spinner and added 3D neon cube */
+.loading-spinner {
+    width: 80px;
+    height: 80px;
+    position: relative;
+    transform-style: preserve-3d;
+    animation: rotate3d 4s linear infinite;
+    margin-bottom: 30px;
+}
+
+/* 3D Cube Faces */
+.cube-face {
+    position: absolute;
+    width: 80px;
+    height: 80px;
+    border: 2px solid #00f0ff; /* Neon cyan color */
+    box-shadow: 0 0 15px #00f0ff, inset 0 0 10px rgba(0, 240, 255, 0.5);
+    background-color: rgba(0, 240, 255, 0.05);
+    backface-visibility: visible;
+    transition: all 0.3s ease;
+}
+
+/* Position each face of the cube */
+.front {
+    transform: translateZ(40px);
+}
+
+.back {
+    transform: rotateY(180deg) translateZ(40px);
+}
+
+.right {
+    transform: rotateY(90deg) translateZ(40px);
+}
+
+.left {
+    transform: rotateY(-90deg) translateZ(40px);
+}
+
+.top {
+    transform: rotateX(90deg) translateZ(40px);
+}
+
+.bottom {
+    transform: rotateX(-90deg) translateZ(40px);
+}
+
+/* 3D Rotation Animation */
+@keyframes rotate3d {
+    0% {
+        transform: rotateX(0deg) rotateY(0deg);
+    }
+    25% {
+        transform: rotateX(90deg) rotateY(90deg);
+    }
+    50% {
+        transform: rotateX(180deg) rotateY(180deg);
+    }
+    75% {
+        transform: rotateX(270deg) rotateY(270deg);
+    }
+    100% {
+        transform: rotateX(360deg) rotateY(360deg);
+    }
+}
+
+/* Add pulse effect to cube edges */
+@keyframes neonPulse {
+    0% {
+        box-shadow: 0 0 10px #00f0ff, inset 0 0 5px rgba(0, 240, 255, 0.5);
+        border-color: #00f0ff;
+    }
+    50% {
+        box-shadow: 0 0 20px #ff00ea, inset 0 0 10px rgba(255, 0, 234, 0.5);
+        border-color: #ff00ea; /* Neon magenta */
+    }
+    100% {
+        box-shadow: 0 0 10px #00f0ff, inset 0 0 5px rgba(0, 240, 255, 0.5);
+        border-color: #00f0ff;
+    }
+}
+
+/* Apply pulse animation to cube faces */
+.cube-face {
+    animation: neonPulse 3s infinite;
+}
+
+/* Stagger animation timing for different faces for better effect */
+.back { animation-delay: 0.5s; }
+.right { animation-delay: 1s; }
+.left { animation-delay: 1.5s; }
+.top { animation-delay: 2s; }
+.bottom { animation-delay: 2.5s; }
+
+.loading-text {
+    font-size: 1.5rem;
+    letter-spacing: 2px;
+    text-shadow: 0 0 10px rgba(0, 240, 255, 0.7); /* Neon text effect */
+    animation: textGlow 2s infinite alternate;
+}
+
+@keyframes textGlow {
+    from { text-shadow: 0 0 5px rgba(0, 240, 255, 0.7); }
+    to { text-shadow: 0 0 15px rgba(255, 0, 234, 0.9); }
+}
+
+/* Game Container */
+.game-container {
+    background-color: rgba(255, 255, 255, 0.9);
+    border-radius: 15px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2),
+                0 0 20px rgba(0, 240, 255, 0.3); /* Added subtle neon glow */
+    padding: 30px;
+    width: 90%;
+    max-width: 500px;
+    text-align: center;
+    opacity: 0;
+    transform: translateY(20px);
+    transition: opacity 0.8s ease, transform 0.8s ease;
+    backdrop-filter: blur(5px); /* Frosted glass effect */
+}
+
+.game-container.visible {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+/* Game Elements */
+h1 {
+    color: #2a0845;
+    margin-bottom: 10px;
+    font-size: 2.2rem;
+    text-shadow: 0 0 5px rgba(42, 8, 69, 0.2);
+}
+
+.instructions {
+    color: #444;
+    margin-bottom: 25px;
+    font-size: 1.1rem;
+}
+
+.input-container {
+    margin-bottom: 20px;
+}
+
+input {
+    padding: 12px 15px;
+    font-size: 1.1rem;
+    border: 2px solid #ddd;
+    border-radius: 5px;
+    width: 150px;
+    text-align: center;
+    margin-right: 10px;
+    transition: all 0.3s;
+    background-color: rgba(255, 255, 255, 0.8);
+}
+
+input:focus {
+    outline: none;
+    border-color: #00f0ff;
+    box-shadow: 0 0 8px rgba(0, 240, 255, 0.5);
+}
+
+button {
+    background: linear-gradient(135deg, #0c1e59, #2a0845);
+    color: white;
+    border: none;
+    border-radius: 5px;
+    padding: 12px 20px;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: all 0.3s;
+    position: relative;
+    overflow: hidden;
+}
+
+button:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+}
+
+button:hover::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+    animation: buttonGlow 1.5s infinite;
+}
+
+@keyframes buttonGlow {
+    0% { transform: translateX(-100%); }
+    100% { transform: translateX(100%); }
+}
+
+button:active {
+    transform: translateY(0);
+}
+
+.message {
+    font-size: 1.2rem;
+    margin: 20px 0;
+    min-height: 30px;
+    font-weight: 500;
+}
+
+.correct {
+    color: #00c07f;
+    text-shadow: 0 0 5px rgba(0, 192, 127, 0.3);
+}
+
+.wrong {
+    color: #ff3860;
+    text-shadow: 0 0 5px rgba(255, 56, 96, 0.3);
+}
+
+.neutral {
+    color: #2a0845;
+}
+
+.attempts {
+    font-size: 1.1rem;
+    color: #555;
+    margin-bottom: 20px;
+}
+
+.play-again {
+    display: none;
+    margin-top: 20px;
+    background: linear-gradient(135deg, #00c07f, #00a86b);
+}
+
+.play-again:hover {
+    background: linear-gradient(135deg, #00a86b, #008c5a);
+}
+
+/* Animations */
+@keyframes pulse {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.05); }
+    100% { transform: scale(1); }
+}
+
+.pulse {
+    animation: pulse 0.5s;
+}
+
+/* Responsiveness */
+@media screen and (max-width: 480px) {
+    .game-container {
+        padding: 20px;
+    }
+    
+    h1 {
+        font-size: 1.8rem;
+    }
+    
+    .input-container {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+    
+    input {
+        margin-right: 0;
+        margin-bottom: 15px;
+        width: 80%;
+    }
+    
+    button {
+        width: 80%;
+    }
+    
+    .loading-spinner {
+        width: 60px;
+        height: 60px;
+    }
+    
+    .cube-face {
+        width: 60px;
+        height: 60px;
+    }
+    
+    .front, .back, .right, .left, .top, .bottom {
+        transform-origin: center;
+    }
+    
+    .front { transform: translateZ(30px); }
+    .back { transform: rotateY(180deg) translateZ(30px); }
+    .right { transform: rotateY(90deg) translateZ(30px); }
+    .left { transform: rotateY(-90deg) translateZ(30px); }
+    .top { transform: rotateX(90deg) translateZ(30px); }
+    .bottom { transform: rotateX(-90deg) translateZ(30px); }
+}
+
+/* Optimize animations for performance */
+@media (prefers-reduced-motion: reduce) {
+    .loading-spinner {
+        animation-duration: 8s;
+    }
+    
+    .cube-face {
+        animation-duration: 6s;
+    }
+    
+    button:hover::after {
+        animation: none;
+    }
+}
+    </style>
+</head>
+<body>
+    <!-- Loading Screen -->
+    <div id="loading-screen">
+        <div class="loading-spinner"></div>
+        <div class="loading-text">Loading Game...</div>
+    </div>
+    
+    <!-- Game Container -->
+    <div class="game-container" id="game-container">
+        <h1>Number Guessing Game</h1>
+        <p class="instructions">Guess a number between 1 and 100</p>
+        
+        <div class="input-container">
+            <input type="number" id="guess-input" min="1" max="100" placeholder="Enter guess">
+            <button id="submit-guess">Submit Guess</button>
+        </div>
+        
+        <p class="message" id="message">Take a guess!</p>
+        <p class="attempts" id="attempts">Attempts: 0</p>
+        
+        <button class="play-again" id="play-again">Play Again</button>
+    </div>
+    
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Cache DOM elements
+            const loadingScreen = document.getElementById('loading-screen');
+            const gameContainer = document.getElementById('game-container');
+            const guessInput = document.getElementById('guess-input');
+            const submitGuessBtn = document.getElementById('submit-guess');
+            const message = document.getElementById('message');
+            const attemptsDisplay = document.getElementById('attempts');
+            const playAgainBtn = document.getElementById('play-again');
+            
+            // Game variables
+            let targetNumber;
+            let attempts;
+            let gameOver;
+            
+            // Show loading screen, then transition to game
+            setTimeout(() => {
+                loadingScreen.style.opacity = '0';
+                setTimeout(() => {
+                    loadingScreen.style.display = 'none';
+                    gameContainer.classList.add('visible');
+                    initGame();
+                }, 800);
+            }, 2500); // 2.5 seconds loading time
+            
+            // Initialize game
+            function initGame() {
+                targetNumber = Math.floor(Math.random() * 100) + 1; // Random number between 1-100
+                attempts = 0;
+                gameOver = false;
+                
+                // Reset UI
+                guessInput.value = '';
+                guessInput.disabled = false;
+                submitGuessBtn.disabled = false;
+                message.textContent = 'Take a guess!';
+                message.className = 'message neutral';
+                attemptsDisplay.textContent = 'Attempts: 0';
+                playAgainBtn.style.display = 'none';
+                
+                // Focus on input
+                guessInput.focus();
+                
+                console.log('Game initialized. Target number:', targetNumber); // For debugging
+            }
+            
+            // Check the user's guess
+            function checkGuess() {
+                // Validate input
+                if (!guessInput.value) {
+                    message.textContent = 'Please enter a number!';
+                    message.className = 'message wrong';
+                    return;
+                }
+                
+                const userGuess = parseInt(guessInput.value);
+                
+                // Validate range
+                if (userGuess < 1 || userGuess > 100) {
+                    message.textContent = 'Please enter a number between 1 and 100!';
+                    message.className = 'message wrong';
+                    return;
+                }
+                
+                // Increment attempts
+                attempts++;
+                attemptsDisplay.textContent = `Attempts: ${attempts}`;
+                
+                // Add pulse animation to message
+                message.classList.add('pulse');
+                setTimeout(() => {
+                    message.classList.remove('pulse');
+                }, 500);
+                
+                // Check guess against target number
+                if (userGuess === targetNumber) {
+                    // Correct guess
+                    gameOver = true;
+                    message.textContent = `Congratulations! You guessed the number in ${attempts} ${attempts === 1 ? 'attempt' : 'attempts'}!`;
+                    message.className = 'message correct';
+                    guessInput.disabled = true;
+                    submitGuessBtn.disabled = true;
+                    playAgainBtn.style.display = 'inline-block';
+                    
+                    // Add confetti effect
+                    createConfetti();
+                } else if (userGuess < targetNumber) {
+                    // Too low
+                    message.textContent = 'Too low! Try a higher number.';
+                    message.className = 'message wrong';
+                } else {
+                    // Too high
+                    message.textContent = 'Too high! Try a lower number.';
+                    message.className = 'message wrong';
+                }
+                
+                // Clear input for next guess
+                guessInput.value = '';
+                guessInput.focus();
+            }
+            
+            // Simple confetti effect for winning
+            function createConfetti() {
+                for (let i = 0; i < 100; i++) {
+                    const confetti = document.createElement('div');
+                    confetti.style.width = '10px';
+                    confetti.style.height = '10px';
+                    confetti.style.position = 'fixed';
+                    confetti.style.left = Math.random() * 100 + 'vw';
+                    confetti.style.top = -20 + 'px';
+                    confetti.style.borderRadius = Math.random() > 0.5 ? '50%' : '0';
+                    confetti.style.backgroundColor = `hsl(${Math.random() * 360}, 100%, 50%)`;
+                    confetti.style.zIndex = '1000';
+                    confetti.style.transform = 'rotate(' + Math.random() * 360 + 'deg)';
+                    confetti.style.transition = 'transform ' + (Math.random() * 2 + 1) + 's, top ' + (Math.random() * 3 + 2) + 's';
+                    document.body.appendChild(confetti);
+                    
+                    setTimeout(() => {
+                        confetti.style.top = '100vh';
+                        confetti.style.transform = 'rotate(' + Math.random() * 360 + 'deg)';
+                    }, 0);
+                    
+                    setTimeout(() => {
+                        confetti.remove();
+                    }, 5000);
+                }
+            }
+            
+            // Event listeners
+            submitGuessBtn.addEventListener('click', checkGuess);
+            
+            guessInput.addEventListener('keypress', function(e) {
+                if (e.key === 'Enter') {
+                    checkGuess();
+                }
+            });
+            
+            playAgainBtn.addEventListener('click', function() {
+                initGame();
+            });
+        });
+    </script>
+</body>
+</html>
