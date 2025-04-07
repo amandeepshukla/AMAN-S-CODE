@@ -1,0 +1,592 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Track Your Order - grocery shop</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <style>
+        /* Base Styles */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: #f9f9f9;
+            color: #333;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* Header */
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 0;
+            border-bottom: 2px solid #4CAF50;
+            margin-bottom: 30px;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            font-size: 24px;
+            font-weight: bold;
+            color: #2E7D32;
+        }
+
+        .logo span {
+            color: #FF5722;
+        }
+
+        .logo-icon {
+            width: 40px;
+            height: 40px;
+            margin-right: 10px;
+            background-color: #4CAF50;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 20px;
+        }
+
+        nav {
+            display: flex;
+            gap: 20px;
+        }
+
+        nav a {
+            text-decoration: none;
+            color: #2E7D32;
+            font-weight: 500;
+            transition: all 0.3s ease;
+        }
+
+        nav a:hover {
+            color: #FF5722;
+        }
+
+        /* Main Content */
+        main {
+            flex: 1;
+        }
+
+        .track-order-section {
+            background-color: white;
+            border-radius: 15px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            padding: 30px;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        h1 {
+            color: #2E7D32;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        .order-form {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 30px;
+            flex-wrap: wrap;
+        }
+
+        .order-form input {
+            flex: 1;
+            min-width: 200px;
+            padding: 12px 15px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            font-size: 16px;
+        }
+
+        .order-form button {
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            padding: 12px 20px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .order-form button:hover {
+            background-color: #388E3C;
+        }
+
+        .tracking-results {
+            display: none;
+            margin-top: 30px;
+        }
+
+        .order-details {
+            margin-bottom: 30px;
+            padding: 20px;
+            background-color: #F1F8E9;
+            border-radius: 10px;
+        }
+
+        .detail-row {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 10px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid #e0e0e0;
+        }
+
+        .detail-row:last-child {
+            border-bottom: none;
+        }
+
+        .tracking-status {
+            margin-top: 30px;
+        }
+
+        .status-timeline {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 30px;
+            position: relative;
+        }
+
+        .status-timeline::before {
+            content: '';
+            position: absolute;
+            top: 20px;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background-color: #e0e0e0;
+            z-index: 1;
+        }
+
+        .status-point {
+            position: relative;
+            z-index: 2;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            width: 20%;
+        }
+
+        .point-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background-color: #e0e0e0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 10px;
+            transition: all 0.3s ease;
+        }
+
+        .point-icon.active {
+            background-color: #4CAF50;
+            color: white;
+        }
+
+        .point-text {
+            text-align: center;
+            font-size: 14px;
+            font-weight: 500;
+        }
+
+        /* 3D Package */
+        .package-3d-container {
+            perspective: 1000px;
+            width: 200px;
+            height: 200px;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            z-index: 100;
+            display: none;
+        }
+
+        .package-3d {
+            width: 100%;
+            height: 100%;
+            position: relative;
+            transform-style: preserve-3d;
+            animation: rotate-package 3s infinite linear;
+        }
+
+        .package-face {
+            position: absolute;
+            width: 200px;
+            height: 200px;
+            border: 2px solid #2E7D32;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            color: white;
+            font-size: 20px;
+            box-shadow: inset 0 0 20px rgba(0, 0, 0, 0.2);
+        }
+
+        .front { 
+            transform: translateZ(100px); 
+            background-color: #4CAF50;
+        }
+        .back { 
+            transform: rotateY(180deg) translateZ(100px); 
+            background-color: #388E3C;
+        }
+        .right { 
+            transform: rotateY(90deg) translateZ(100px); 
+            background-color: #43A047;
+        }
+        .left { 
+            transform: rotateY(-90deg) translateZ(100px); 
+            background-color: #66BB6A;
+        }
+        .top { 
+            transform: rotateX(90deg) translateZ(100px); 
+            background-color: #81C784;
+        }
+        .bottom { 
+            transform: rotateX(-90deg) translateZ(100px); 
+            background-color: #A5D6A7;
+        }
+
+        @keyframes rotate-package {
+            0% { transform: rotateX(0) rotateY(0); }
+            100% { transform: rotateX(360deg) rotateY(360deg); }
+        }
+
+        /* Celebration Animation */
+        .celebration-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 999;
+            display: none;
+            overflow: hidden;
+        }
+
+        .veggie {
+            position: absolute;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            animation: fly-veggie 3s ease-out forwards;
+        }
+
+        @keyframes fly-veggie {
+            0% {
+                transform: translateY(100vh) scale(0);
+                opacity: 0;
+            }
+            50% {
+                opacity: 1;
+            }
+            100% {
+                transform: translateY(-100px) scale(1);
+                opacity: 0;
+            }
+        }
+
+        .thank-you-popup {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background-color: white;
+            padding: 30px 50px;
+            border-radius: 15px;
+            box-shadow: 0 5px 30px rgba(0, 0, 0, 0.3);
+            z-index: 1000;
+            display: none;
+            text-align: center;
+        }
+
+        .thank-you-popup h2 {
+            color: #2E7D32;
+            margin-bottom: 15px;
+        }
+
+        .thank-you-popup p {
+            margin-bottom: 20px;
+        }
+
+        .thank-you-popup button {
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        /* Footer */
+        footer {
+            background-color: #F1F8E9;
+            padding: 20px 0;
+            margin-top: 40px;
+            border-top: 1px solid #e0e0e0;
+            text-align: center;
+        }
+
+        footer p {
+            color: #666;
+            font-size: 14px;
+        }
+
+        /* Overlay */
+        .overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            z-index: 50;
+            display: none;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .status-timeline {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 20px;
+            }
+
+            .status-timeline::before {
+                top: 0;
+                bottom: 0;
+                left: 20px;
+                width: 4px;
+                height: auto;
+            }
+
+            .status-point {
+                flex-direction: row;
+                width: 100%;
+                gap: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <div class="logo">
+                <div class="logo-icon">🥬</div>
+                Fresh <span>Bajar</span>
+            </div>
+            <nav>
+                <a href="#">Home</a>
+                <a href="#">Shop</a>
+                <a href="#">My Account</a>
+                <a href="#">Track Order</a>
+                <a href="#">Contact</a>
+            </nav>
+        </header>
+
+        <main>
+            <section class="track-order-section">
+                <h1>Track Your Order</h1>
+                <div class="order-form">
+                    <input type="text" id="orderNumber" placeholder="Enter your order number">
+                    <button id="trackButton">Track Order</button>
+                </div>
+
+                <div class="tracking-results" id="trackingResults">
+                    <div class="order-details">
+                        <h2>Order #FB78942</h2>
+                        <div class="detail-row">
+                            <span>Order Date:</span>
+                            <span>April 5, 2025</span>
+                        </div>
+                        <div class="detail-row">
+                            <span>Estimated Delivery:</span>
+                            <span>April 7, 2025</span>
+                        </div>
+                        <div class="detail-row">
+                            <span>Shipping Method:</span>
+                            <span>Express Delivery</span>
+                        </div>
+                        <div class="detail-row">
+                            <span>Current Status:</span>
+                            <span id="currentStatus">Out for Delivery</span>
+                        </div>
+                    </div>
+
+                    <div class="tracking-status">
+                        <h3>Tracking Status</h3>
+                        <div class="status-timeline">
+                            <div class="status-point">
+                                <div class="point-icon active">1</div>
+                                <div class="point-text">Order Placed</div>
+                            </div>
+                            <div class="status-point">
+                                <div class="point-icon active">2</div>
+                                <div class="point-text">Processed</div>
+                            </div>
+                            <div class="status-point">
+                                <div class="point-icon active">3</div>
+                                <div class="point-text">Shipped</div>
+                            </div>
+                            <div class="status-point">
+                                <div class="point-icon active">4</div>
+                                <div class="point-text">Out for Delivery</div>
+                            </div>
+                            <div class="status-point">
+                                <div class="point-icon" id="deliveredPoint">5</div>
+                                <div class="point-text">Delivered</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div style="text-align: center; margin-top: 30px;">
+                        <button id="markDeliveredBtn" style="background-color: #FF5722; color: white; border: none; padding: 10px 20px; border-radius: 5px; cursor: pointer;">
+                            Mark as Delivered (Demo)
+                        </button>
+                    </div>
+                </div>
+            </section>
+        </main>
+
+        <footer>
+            <p>&copy; 2025 grocery shop. All rights reserved.</p>
+        </footer>
+    </div>
+
+    <!-- 3D Package Animation -->
+    <div class="overlay" id="overlay"></div>
+    <div class="package-3d-container" id="package3dContainer">
+        <div class="package-3d">
+            <div class="package-face front">grocery shop</div>
+            <div class="package-face back">Order Tracked</div>
+            <div class="package-face right">🥦</div>
+            <div class="package-face left">🥕</div>
+            <div class="package-face top">🍎</div>
+            <div class="package-face bottom">🍅</div>
+        </div>
+    </div>
+
+    <!-- Celebration Animation -->
+    <div class="celebration-container" id="celebrationContainer"></div>
+    <div class="thank-you-popup" id="thankYouPopup">
+        <h2>Thank You!</h2>
+        <p>Your fresh produce has been delivered. Enjoy your healthy meals!</p>
+        <button id="closeThankYou">Close</button>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const trackButton = document.getElementById('trackButton');
+            const orderNumberInput = document.getElementById('orderNumber');
+            const trackingResults = document.getElementById('trackingResults');
+            const package3dContainer = document.getElementById('package3dContainer');
+            const overlay = document.getElementById('overlay');
+            const celebrationContainer = document.getElementById('celebrationContainer');
+            const thankYouPopup = document.getElementById('thankYouPopup');
+            const closeThankYouBtn = document.getElementById('closeThankYou');
+            const markDeliveredBtn = document.getElementById('markDeliveredBtn');
+            const currentStatus = document.getElementById('currentStatus');
+            const deliveredPoint = document.getElementById('deliveredPoint');
+
+            // Show 3D package on track button click
+            trackButton.addEventListener('click', function() {
+                if (orderNumberInput.value.trim() === '') {
+                    alert('Please enter an order number');
+                    return;
+                }
+
+                // Show overlay and 3D package
+                overlay.style.display = 'block';
+                package3dContainer.style.display = 'block';
+
+                // Hide 3D package after animation
+                setTimeout(function() {
+                    overlay.style.display = 'none';
+                    package3dContainer.style.display = 'none';
+                    trackingResults.style.display = 'block';
+                }, 3000);
+            });
+
+            // Mark as delivered (demo)
+            markDeliveredBtn.addEventListener('click', function() {
+                currentStatus.textContent = 'Delivered';
+                deliveredPoint.classList.add('active');
+                markDeliveredBtn.style.display = 'none';
+
+                // Start celebration animation
+                startCelebration();
+            });
+
+            // Close thank you popup
+            closeThankYouBtn.addEventListener('click', function() {
+                thankYouPopup.style.display = 'none';
+                overlay.style.display = 'none';
+            });
+
+            // Function to create random veggies
+            function startCelebration() {
+                overlay.style.display = 'block';
+                celebrationContainer.style.display = 'block';
+                
+                const veggies = ['🥕', '🥦', '🍅', '🍎', '🥬', '🍆', '🥑', '🫑', '🍊', '🍋'];
+                const colors = ['#4CAF50', '#8BC34A', '#CDDC39', '#FF9800', '#FF5722'];
+                
+                // Create 30 flying veggies
+                for (let i = 0; i < 30; i++) {
+                    setTimeout(() => {
+                        const veggie = document.createElement('div');
+                        veggie.classList.add('veggie');
+                        
+                        // Random veggie emoji
+                        veggie.textContent = veggies[Math.floor(Math.random() * veggies.length)];
+                        
+                        // Random position
+                        veggie.style.left = Math.random() * 100 + 'vw';
+                        veggie.style.fontSize = (Math.random() * 20 + 20) + 'px';
+                        
+                        // Random animation duration
+                        const duration = Math.random() * 2 + 2;
+                        veggie.style.animationDuration = duration + 's';
+                        
+                        celebrationContainer.appendChild(veggie);
+                        
+                        // Remove after animation
+                        setTimeout(() => {
+                            veggie.remove();
+                        }, duration * 1000);
+                    }, i * 100);
+                }
+
+                // Show thank you popup after a delay
+                setTimeout(() => {
+                    thankYouPopup.style.display = 'block';
+                }, 1500);
+            }
+        });
+    </script>
+</body>
+</html>
