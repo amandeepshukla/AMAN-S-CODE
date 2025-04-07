@@ -1,0 +1,1199 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>grocery shop - Return Policy</title>
+  <style>
+    :root {
+      --primary: #4caf50;
+      --secondary: #ff9800;
+      --tertiary: #8bc34a;
+      --light: #f1f8e9;
+      --dark: #33691e;
+      --earth: #795548;
+      --background: #fcfcf7;
+      --text: #2e3a23;
+      --shadow: rgba(0, 0, 0, 0.1);
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      cursor: none;
+    }
+
+    body {
+      background-color: var(--background);
+      color: var(--text);
+      overflow-x: hidden;
+    }
+
+    .cursor {
+      position: fixed;
+      width: 24px;
+      height: 24px;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%234caf50'%3E%3Cpath d='M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 15h-2v-6h2v6zm4 0h-2v-6h2v6zm-6-8h8v2H9V9z'/%3E%3C/svg%3E");
+      background-size: contain;
+      pointer-events: none;
+      z-index: 9999;
+      transition: transform 0.1s ease;
+      transform: translate(-50%, -50%);
+    }
+
+    .cursor.clickable {
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%23ff9800'%3E%3Cpath d='M17.21 9l-4.38-6.56c-.19-.28-.51-.42-.83-.42-.32 0-.64.14-.83.43L6.79 9H2c-.55 0-1 .45-1 1 0 .09.01.18.04.27l2.54 9.27c.23.84 1 1.46 1.92 1.46h13c.92 0 1.69-.62 1.93-1.46l2.54-9.27L23 10c0-.55-.45-1-1-1h-4.79zM9 9l3-4.4L15 9H9zm3 8c-1.1 0-2-.9-2-2s.9-2 2-2 2 .9 2 2-.9 2-2 2z'/%3E%3C/svg%3E");
+      transform: translate(-50%, -50%) scale(1.2);
+    }
+
+    .cursor.help {
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%233f51b5'%3E%3Cpath d='M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 17h-2v-2h2v2zm2.07-7.75l-.9.92C13.45 12.9 13 13.5 13 15h-2v-.5c0-1.1.45-2.1 1.17-2.83l1.24-1.26c.37-.36.59-.86.59-1.41 0-1.1-.9-2-2-2s-2 .9-2 2H8c0-2.21 1.79-4 4-4s4 1.79 4 4c0 .88-.36 1.68-.93 2.25z'/%3E%3C/svg%3E");
+      transform: translate(-50%, -50%) scale(1.3);
+    }
+
+    .tooltip {
+      position: fixed;
+      pointer-events: none;
+      background-color: var(--light);
+      color: var(--dark);
+      padding: 8px 12px;
+      border-radius: 8px;
+      font-size: 14px;
+      box-shadow: 0 4px 6px var(--shadow);
+      z-index: 9998;
+      opacity: 0;
+      transform: translateY(10px);
+      transition: opacity 0.3s, transform 0.3s;
+    }
+
+    .tooltip.show {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    header {
+      background: linear-gradient(135deg, var(--primary), var(--tertiary));
+      color: white;
+      padding: 40px 20px;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .floating-produce {
+      position: absolute;
+      pointer-events: none;
+      opacity: 0.3;
+      transition: transform 1s ease-in-out;
+    }
+
+    .floating-produce:nth-child(1) {
+      top: 10%;
+      left: 10%;
+      transform: rotate(20deg);
+    }
+
+    .floating-produce:nth-child(2) {
+      top: 20%;
+      right: 15%;
+      transform: rotate(-15deg);
+    }
+
+    .floating-produce:nth-child(3) {
+      bottom: 20%;
+      left: 20%;
+      transform: rotate(5deg);
+    }
+
+    .floating-produce:nth-child(4) {
+      bottom: 10%;
+      right: 10%;
+      transform: rotate(-10deg);
+    }
+
+    h1 {
+      font-size: 3rem;
+      margin-bottom: 10px;
+      transform: scale(0);
+      opacity: 0;
+      transition: transform 0.5s, opacity 0.5s;
+    }
+
+    h1.visible {
+      transform: scale(1);
+      opacity: 1;
+    }
+
+    .subtitle {
+      font-size: 1.2rem;
+      margin-bottom: 20px;
+      opacity: 0;
+      transform: translateY(20px);
+      transition: opacity 0.5s, transform 0.5s;
+    }
+
+    .subtitle.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    nav {
+      background-color: white;
+      padding: 15px 20px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      box-shadow: 0 2px 10px var(--shadow);
+    }
+
+    .logo {
+      font-weight: bold;
+      font-size: 1.5rem;
+      color: var(--primary);
+    }
+
+    .nav-links {
+      display: flex;
+      list-style: none;
+    }
+
+    .nav-links li {
+      margin-left: 20px;
+    }
+
+    .nav-links a {
+      text-decoration: none;
+      color: var(--text);
+      transition: color 0.3s;
+    }
+
+    .nav-links a:hover {
+      color: var(--primary);
+    }
+
+    .return-btn {
+      background-color: var(--primary);
+      color: white;
+      padding: 10px 20px;
+      border: none;
+      border-radius: 20px;
+      cursor: none;
+      font-weight: bold;
+      transition: all 0.3s;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .return-btn:hover {
+      background-color: var(--dark);
+      box-shadow: 0 4px 8px var(--shadow);
+      transform: translateY(-2px);
+    }
+
+    .return-btn:hover::after {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%23ffffff' opacity='0.2'%3E%3Cpath d='M19 7v4H5.83l3.58-3.59L8 6l-6 6 6 6 1.41-1.41L5.83 13H21V7z'/%3E%3C/svg%3E") no-repeat center;
+      background-size: 24px;
+      animation: returnAnimation 0.7s forwards;
+    }
+
+    @keyframes returnAnimation {
+      0% {
+        opacity: 0;
+        transform: translateX(-100%);
+      }
+      100% {
+        opacity: 0.3;
+        transform: translateX(0);
+      }
+    }
+
+    main {
+      padding: 40px 20px;
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    .section {
+      margin-bottom: 60px;
+      opacity: 0;
+      transform: translateY(40px);
+      transition: opacity 0.7s, transform 0.7s;
+    }
+
+    .section.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .section-title {
+      font-size: 2rem;
+      margin-bottom: 20px;
+      position: relative;
+      display: inline-block;
+    }
+
+    .section-title::after {
+      content: '';
+      position: absolute;
+      bottom: -5px;
+      left: 0;
+      width: 0;
+      height: 3px;
+      background-color: var(--secondary);
+      transition: width 0.5s ease-out;
+    }
+
+    .section.visible .section-title::after {
+      width: 100%;
+    }
+
+    .card {
+      background-color: white;
+      border-radius: 10px;
+      padding: 30px;
+      margin-bottom: 20px;
+      box-shadow: 0 4px 10px var(--shadow);
+      transition: all 0.3s;
+    }
+
+    .card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 8px 15px var(--shadow);
+    }
+
+    .promise-list {
+      list-style: none;
+    }
+
+    .promise-item {
+      margin-bottom: 15px;
+      padding-left: 35px;
+      position: relative;
+      opacity: 0;
+      transform: translateX(-20px);
+      transition: opacity 0.5s, transform 0.5s;
+    }
+
+    .promise-item.visible {
+      opacity: 1;
+      transform: translateX(0);
+    }
+
+    .checkmark {
+      position: absolute;
+      left: 0;
+      top: 0;
+      width: 24px;
+      height: 24px;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%234caf50'%3E%3Cpath d='M0 0h24v24H0z' fill='none'/%3E%3Cpath d='M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z'/%3E%3C/svg%3E");
+      background-size: 0%;
+      background-repeat: no-repeat;
+      background-position: center;
+      opacity: 0;
+      transition: background-size 0.5s ease, opacity 0.5s;
+    }
+
+    .promise-item.visible .checkmark {
+      background-size: 100%;
+      opacity: 1;
+    }
+
+    .badge {
+      display: inline-block;
+      padding: 6px 12px;
+      background-color: var(--light);
+      color: var(--dark);
+      border-radius: 15px;
+      font-weight: bold;
+      margin-right: 10px;
+      margin-bottom: 10px;
+      transition: transform 0.3s;
+      transform-origin: center;
+    }
+
+    .badge:hover {
+      transform: rotate(5deg) scale(1.1);
+    }
+
+    .steps-container {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 20px;
+      margin-top: 30px;
+    }
+
+    .step-card {
+      flex: 1 1 200px;
+      min-height: 200px;
+      perspective: 1000px;
+      position: relative;
+    }
+
+    .step-inner {
+      position: relative;
+      width: 100%;
+      height: 100%;
+      transform-style: preserve-3d;
+      transition: transform 0.8s;
+    }
+
+    .step-card:hover .step-inner {
+      transform: rotateY(180deg);
+    }
+
+    .step-front, .step-back {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      backface-visibility: hidden;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+      padding: 20px;
+      border-radius: 10px;
+    }
+
+    .step-front {
+      background-color: white;
+      box-shadow: 0 4px 10px var(--shadow);
+    }
+
+    .step-back {
+      background-color: var(--tertiary);
+      color: white;
+      transform: rotateY(180deg);
+      box-shadow: 0 4px 10px var(--shadow);
+    }
+
+    .step-number {
+      font-size: 3rem;
+      font-weight: bold;
+      color: var(--primary);
+      margin-bottom: 10px;
+    }
+
+    .progress-container {
+      width: 100%;
+      height: 10px;
+      background-color: var(--light);
+      border-radius: 5px;
+      margin: 40px 0;
+      overflow: hidden;
+      position: relative;
+    }
+
+    .progress-bar {
+      height: 100%;
+      width: 0;
+      background-color: var(--primary);
+      transition: width 1s ease-out;
+    }
+
+    .progress-bar.animate {
+      width: 100%;
+    }
+
+    .faq-container {
+      margin-top: 30px;
+    }
+
+    .faq-item {
+      border-bottom: 1px solid var(--light);
+      margin-bottom: 10px;
+    }
+
+    .faq-question {
+      padding: 15px 0;
+      font-weight: bold;
+      cursor: none;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .faq-question::after {
+      content: '+';
+      font-size: 1.5rem;
+      transition: transform 0.3s;
+    }
+
+    .faq-item.open .faq-question::after {
+      transform: rotate(45deg);
+    }
+
+    .faq-answer {
+      max-height: 0;
+      overflow: hidden;
+      transition: max-height 0.5s ease;
+      padding: 0 20px;
+    }
+
+    .faq-item.open .faq-answer {
+      max-height: 300px;
+      padding: 0 20px 15px;
+    }
+
+    .contact-container {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 20px;
+      margin-top: 30px;
+    }
+
+    .contact-card {
+      flex: 1 1 200px;
+      background-color: white;
+      border-radius: 10px;
+      padding: 30px;
+      box-shadow: 0 4px 10px var(--shadow);
+      text-align: center;
+      transition: all 0.3s;
+    }
+
+    .contact-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 8px 15px var(--shadow);
+    }
+
+    .contact-icon {
+      font-size: 2rem;
+      color: var(--primary);
+      margin-bottom: 20px;
+      display: inline-block;
+    }
+
+    .chat-icon {
+      position: relative;
+      animation: pulse 2s infinite;
+    }
+
+    @keyframes pulse {
+      0% {
+        transform: scale(1);
+      }
+      50% {
+        transform: scale(1.1);
+      }
+      100% {
+        transform: scale(1);
+      }
+    }
+
+    .email-icon {
+      transition: transform 0.3s;
+    }
+
+    .contact-card:hover .email-icon {
+      transform: translateY(-5px);
+    }
+
+    .contact-card:hover .email-icon::after {
+      content: '';
+      position: absolute;
+      top: 100%;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 0;
+      height: 0;
+      border-left: 10px solid transparent;
+      border-right: 10px solid transparent;
+      border-bottom: 10px solid var(--primary);
+      opacity: 0;
+      animation: sproutAnimation 0.5s forwards;
+    }
+
+    @keyframes sproutAnimation {
+      0% {
+        opacity: 0;
+        transform: translateX(-50%) scale(0);
+      }
+      100% {
+        opacity: 1;
+        transform: translateX(-50%) scale(1);
+      }
+    }
+
+    .contact-info {
+      margin-top: 10px;
+    }
+
+    .contact-info a {
+      color: var(--primary);
+      text-decoration: none;
+      transition: color 0.3s;
+    }
+
+    .contact-info a:hover {
+      color: var(--dark);
+    }
+
+    form {
+      margin-top: 30px;
+    }
+
+    .form-group {
+      margin-bottom: 20px;
+    }
+
+    label {
+      display: block;
+      margin-bottom: 5px;
+      font-weight: bold;
+    }
+
+    input, textarea, select {
+      width: 100%;
+      padding: 10px;
+      border: 2px solid var(--light);
+      border-radius: 5px;
+      font-size: 1rem;
+      transition: all 0.3s;
+    }
+
+    input:focus, textarea:focus, select:focus {
+      border-color: var(--primary);
+      box-shadow: 0 0 0 2px rgba(76, 175, 80, 0.2);
+      outline: none;
+      transform: scale(1.02);
+    }
+
+    button[type="submit"] {
+      background-color: var(--primary);
+      color: white;
+      padding: 12px 25px;
+      border: none;
+      border-radius: 25px;
+      cursor: none;
+      font-weight: bold;
+      font-size: 1rem;
+      transition: all 0.3s;
+      position: relative;
+      overflow: hidden;
+    }
+
+    button[type="submit"]::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+      transition: 0.5s;
+    }
+
+    button[type="submit"]:hover {
+      background-color: var(--dark);
+      box-shadow: 0 4px 8px var(--shadow);
+      transform: translateY(-2px);
+    }
+
+    button[type="submit"]:hover::before {
+      left: 100%;
+    }
+
+    footer {
+      background-color: var(--dark);
+      color: white;
+      padding: 40px 20px;
+      text-align: center;
+    }
+
+    .footer-content {
+      max-width: 1200px;
+      margin: 0 auto;
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      gap: 30px;
+    }
+
+    .footer-column {
+      flex: 1 1 250px;
+    }
+
+    .footer-title {
+      font-size: 1.2rem;
+      margin-bottom: 20px;
+      position: relative;
+      display: inline-block;
+    }
+
+    .footer-title::after {
+      content: '';
+      position: absolute;
+      bottom: -5px;
+      left: 0;
+      width: 50px;
+      height: 2px;
+      background-color: var(--secondary);
+    }
+
+    .footer-links {
+      list-style: none;
+    }
+
+    .footer-links li {
+      margin-bottom: 10px;
+    }
+
+    .footer-links a {
+      color: #ddd;
+      text-decoration: none;
+      transition: color 0.3s;
+    }
+
+    .footer-links a:hover {
+      color: white;
+    }
+
+    .copyright {
+      margin-top: 40px;
+      padding-top: 20px;
+      border-top: 1px solid rgba(255, 255, 255, 0.1);
+    }
+
+    .confetti {
+      position: fixed;
+      width: 10px;
+      height: 10px;
+      background-color: var(--primary);
+      opacity: 0;
+      pointer-events: none;
+      z-index: 9999;
+    }
+
+    /* Responsive styles */
+    @media (max-width: 768px) {
+      h1 {
+        font-size: 2rem;
+      }
+
+      .subtitle {
+        font-size: 1rem;
+      }
+
+      nav {
+        flex-direction: column;
+        gap: 10px;
+      }
+
+      .nav-links {
+        margin-top: 10px;
+      }
+
+      .section-title {
+        font-size: 1.5rem;
+      }
+
+      .floating-produce {
+        display: none;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="cursor"></div>
+  <div class="tooltip"></div>
+
+  <header>
+    <div class="floating-produce">🥬</div>
+    <div class="floating-produce">🥕</div>
+    <div class="floating-produce">🍎</div>
+    <div class="floating-produce">🍅</div>
+    <h1>grocery shop Return Policy</h1>
+    <p class="subtitle">Easy, Hassle-Free Returns for Your Groceries</p>
+  </header>
+
+  <nav>
+    <div class="logo">grocery shop</div>
+    <ul class="nav-links">
+      <li><a href="#" class="clickable">Home</a></li>
+      <li><a href="website.html" class="clickable">Shop</a></li>
+      <li><a href="aboutme.html" class="clickable">About</a></li>
+      <li><a href="#" class="clickable">Contact</a></li>
+    </ul>
+    <button class="return-btn clickable">Start a Return</button>
+  </nav>
+
+  <main>
+    <section id="promise" class="section">
+      <h2 class="section-title">Our Fresh Promise</h2>
+      <div class="card">
+        <p>At grocery shop, we're committed to delivering the freshest produce and groceries to your doorstep. If for any reason you're not completely satisfied with your purchase, we make returns simple and convenient.</p>
+        
+        <div class="badges-container">
+          <span class="badge">100% Satisfaction</span>
+          <span class="badge">Easy Returns</span>
+          <span class="badge">Quality Guarantee</span>
+          <span class="badge">Fresh or Refund</span>
+        </div>
+        
+        <ul class="promise-list">
+          <li class="promise-item"><span class="checkmark"></span> <strong>30-Day Return Policy</strong> for most non-perishable items</li>
+          <li class="promise-item"><span class="checkmark"></span> <strong>24-Hour Return Window</strong> for fresh produce and perishable items</li>
+          <li class="promise-item"><span class="checkmark"></span> <strong>Full Refunds</strong> for products that don't meet our freshness standards</li>
+          <li class="promise-item"><span class="checkmark"></span> <strong>Hassle-free Process</strong> with multiple return options</li>
+          <li class="promise-item"><span class="checkmark"></span> <strong>Customer-First Approach</strong> with dedicated support</li>
+        </ul>
+      </div>
+    </section>
+
+    <section id="process" class="section">
+      <h2 class="section-title">Return Process</h2>
+      <div class="card">
+        <p>Our return process is designed to be simple and convenient. Follow these steps to return your items:</p>
+        
+        <div class="progress-container">
+          <div class="progress-bar"></div>
+        </div>
+        
+        <div class="steps-container">
+          <div class="step-card">
+            <div class="step-inner">
+              <div class="step-front">
+                <div class="step-number">1</div>
+                <h3>Initiate Return</h3>
+                <p>Login to your account and select the items you wish to return</p>
+              </div>
+              <div class="step-back">
+                <p>Go to "My Orders" in your account dashboard and click "Return Item" next to the product you wish to return</p>
+              </div>
+            </div>
+          </div>
+          
+          <div class="step-card">
+            <div class="step-inner">
+              <div class="step-front">
+                <div class="step-number">2</div>
+                <h3>Select Reason</h3>
+                <p>Let us know why you're returning the item</p>
+              </div>
+              <div class="step-back">
+                <p>Choose from options like "Not Fresh", "Damaged", "Wrong Item", or "Other" and provide details to help us improve</p>
+              </div>
+            </div>
+          </div>
+          
+          <div class="step-card">
+            <div class="step-inner">
+              <div class="step-front">
+                <div class="step-number">3</div>
+                <h3>Choose Return Method</h3>
+                <p>Select how you want to return the item</p>
+              </div>
+              <div class="step-back">
+                <p>Options include drop-off at our store, pickup by our delivery agent, or donation of edible items to local food banks</p>
+              </div>
+            </div>
+          </div>
+          
+          <div class="step-card">
+            <div class="step-inner">
+              <div class="step-front">
+                <div class="step-number">4</div>
+                <h3>Receive Refund</h3>
+                <p>Get your refund after we process your return</p>
+              </div>
+              <div class="step-back">
+                <p>Refunds are typically processed within 3-5 business days after we receive the returned item</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="faq" class="section">
+      <h2 class="section-title">Frequently Asked Questions</h2>
+      <div class="card">
+        <div class="faq-container">
+          <div class="faq-item">
+            <div class="faq-question help">What items can I return?</div>
+            <div class="faq-answer">
+              <p>You can return any item purchased from grocery shop. Non-perishable items have a 30-day return window, while fresh produce and perishable items have a 24-hour return window. Items must be in their original packaging with receipt or order confirmation.</p>
+            </div>
+          </div>
+          
+          <div class="faq-item">
+            <div class="faq-question help">How do I return produce that wasn't fresh?</div>
+            <div class="faq-answer">
+              <p>If your produce isn't fresh upon delivery, please take a photo and initiate a return within 24 hours. We may ask for images to verify the condition. In most cases, you won't need to return the actual produce - we'll simply process your refund after verification.</p>
+            </div>
+          </div>
+          
+          <div class="faq-item">
+            <div class="faq-question help">How long does it take to get my refund?</div>
+            <div class="faq-answer">
+              <p>After we receive and process your return, refunds typically take 3-5 business days to appear in your original payment method. For store credit, refunds are processed immediately. For perishable items where return is not required, refunds are usually processed within 24-48 hours after approval.</p>
+            </div>
+          </div>
+          
+          <div class="faq-item">
+            <div class="faq-question help">Can I exchange instead of returning?</div>
+            <div class="faq-answer">
+              <p>Yes, you can choose to exchange eligible items. During the return process, select "Exchange" instead of "Return" and choose the replacement item. For fresh produce, we'll include the replacement in your next order or schedule a special delivery.</p>
+            </div>
+          </div>
+          
+          <div class="faq-item">
+            <div class="faq-question help">Are there any return fees?</div>
+            <div class="faq-answer">
+              <p>There are no return fees for items that don't meet our quality standards. For returns due to change of mind or ordering errors, a small restocking fee may apply for non-perishable items. Fresh produce returns never incur fees.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="contact" class="section">
+      <h2 class="section-title">Need Help with Returns?</h2>
+      <div class="card">
+        <p>We're here to help make your return process as smooth as possible. Contact our customer support team through any of the following channels:</p>
+        
+        <div class="contact-container">
+          <div class="contact-card">
+            <div class="contact-icon chat-icon">💬</div>
+            <h3>Live Chat</h3>
+            <div class="contact-info">
+              <p>Available 7 days a week</p>
+              <p>8:00 AM - 10:00 PM</p>
+              <a href="#" class="clickable">Start Chat</a>
+            </div>
+          </div>
+          
+          <div class="contact-card">
+            <div class="contact-icon email-icon">📧</div>
+            <h3>Email Support</h3>
+            <div class="contact-info">
+              <p>Response within 24 hours</p>
+              <a href="mailto:returns@freshbajar.com" class="clickable">returns@freshbajar.com</a>
+            </div>
+          </div>
+          
+          <div class="contact-card">
+            <div class="contact-icon">📞</div>
+            <h3>Phone Support</h3>
+            <div class="contact-info">
+              <p>Mon-Sat: 9:00 AM - 8:00 PM</p>
+              <a href="tel:+1800-FRESH-BJ" class="clickable">1-800-FRESH-BJ</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="return-form" class="section">
+      <h2 class="section-title">Quick Return Form</h2>
+      <div class="card">
+        <p>For immediate processing, fill out this quick form and we'll get back to you within 24 hours.</p>
+        
+        <form id="returnForm">
+          <div class="form-group">
+            <label for="order-number">Order Number</label>
+            <input type="text" id="order-number" placeholder="e.g. FB-12345678" required>
+          </div>
+          
+          <div class="form-group">
+            <label for="return-reason">Reason for Return</label>
+            <select id="return-reason" required>
+              <option value="" disabled selected>Select a reason</option>
+              <option value="not-fresh">Not Fresh</option>
+              <option value="damaged">Damaged</option>
+              <option value="wrong-item">Wrong Item</option>
+              <option value="quality">Quality Below Standards</option>
+              <option value="other">Other</option>
+            </select>
+          </div>
+          
+          <div class="form-group">
+            <label for="return-details">Additional Details</label>
+            <textarea id="return-details" rows="4" placeholder="Tell us more about the issue..."></textarea>
+          </div>
+          
+          <div class="form-group">
+            <label for="return-method">Preferred Return Method</label>
+            <select id="return-method" required>
+              <option value="" disabled selected>Select a method</option>
+              <option value="pickup">Pickup by Delivery Agent</option>
+              <option value="drop-off">Drop-off at Store</option>
+              <option value="donate">Donate Edible Items</option>
+              <option value="no-return">No Return Needed (for Quality Issues)</option>
+            </select>
+          </div>
+          
+          <button type="submit" class="clickable">Submit Return Request</button>
+        </form>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <div class="footer-content">
+      <div class="footer-column">
+        <h3 class="footer-title">grocery shop</h3>
+        <ul class="footer-links">
+          <li><a href="#" class="clickable">About Us</a></li>
+          <li><a href="#" class="clickable">Our Farms</a></li>
+          <li><a href="#" class="clickable">Careers</a></li>
+          <li><a href="#" class="clickable">Blog</a></li>
+        </ul>
+      </div>
+      
+      <div class="footer-column">
+        <h3 class="footer-title">Customer Service</h3>
+        <ul class="footer-links">
+          <li><a href="#" class="clickable">Return Policy</a></li>
+          <li><a href="#" class="clickable">Shipping Info</a></li>
+          <li><a href="#" class="clickable">FAQ</a></li>
+          <li><a href="#" class="clickable">Contact Us</a></li>
+        </ul>
+      </div>
+      
+      <div class="footer-column">
+        <h3 class="footer-title">Shop</h3>
+        <ul class="footer-links">
+          <li><a href="#" class="clickable">Fresh Produce</a></li>
+          <li><a href="#" class="clickable">Pantry Items</a></li>
+          <li><a href="#" class="clickable">Organic Section</a></li>
+          <li><a href="#" class="clickable">Weekly Deals</a></li>
+        </ul>
+      </div>
+    </div>
+    
+    <div class="copyright">
+      <p>&copy; 2025 grocery shop. All Rights Reserved. Made with 🌱 for fresh food lovers.</p>
+    </div>
+  </footer>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      // Custom cursor
+      const cursor = document.querySelector('.cursor');
+      const tooltip = document.querySelector('.tooltip');
+      
+      document.addEventListener('mousemove', (e) => {
+        cursor.style.left = e.clientX + 'px';
+        cursor.style.top = e.clientY + 'px';
+        tooltip.style.left = (e.clientX + 15) + 'px';
+        tooltip.style.top = (e.clientY + 15) + 'px';
+      });
+      
+      // Add clickable class to cursor when hovering over clickable elements
+      document.querySelectorAll('a, button, .return-btn, .faq-question').forEach(item => {
+        item.addEventListener('mouseenter', () => {
+          if (item.classList.contains('help')) {
+            cursor.classList.add('help');
+            tooltip.textContent = 'Click for more info';
+            tooltip.classList.add('show');
+          } else if (item.classList.contains('clickable')) {
+            cursor.classList.add('clickable');
+          }
+        });
+        
+        item.addEventListener('mouseleave', () => {
+          cursor.classList.remove('clickable', 'help');
+          tooltip.classList.remove('show');
+        });
+      });
+      
+      // Entrance animations
+      setTimeout(() => {
+        document.querySelector('h1').classList.add('visible');
+        setTimeout(() => {
+          document.querySelector('.subtitle').classList.add('visible');
+        }, 300);
+      }, 500);
+      
+      // Floating produce animations
+      document.querySelectorAll('.floating-produce').forEach(item => {
+        setInterval(() => {
+          const randomX = Math.random() * 20 - 10;
+          const randomY = Math.random() * 20 - 10;
+          const randomRotate = Math.random() * 40 - 20;
+          
+          item.style.transform = `translate(${randomX}px, ${randomY}px) rotate(${randomRotate}deg)`;
+        }, 3000);
+      });
+      
+      // Scroll animations
+      const sections = document.querySelectorAll('.section');
+      const observerOptions = {
+        root: null,
+        rootMargin: '0px',
+        threshold: 0.1
+      };
+      
+      const sectionObserver = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('visible');
+            
+            // Animate promise items if it's the promise section
+            if (entry.target.id === 'promise') {
+              const promiseItems = entry.target.querySelectorAll('.promise-item');
+              promiseItems.forEach((item, index) => {
+                setTimeout(() => {
+                  item.classList.add('visible');
+                }, 300 * index);
+              });
+            }
+            
+            // Animate progress bar if it's the process section
+            if (entry.target.id === 'process') {
+              setTimeout(() => {
+                entry.target.querySelector('.progress-bar').classList.add('animate');
+              }, 500);
+            }
+          }
+        });
+      }, observerOptions);
+      
+      sections.forEach(section => {
+        sectionObserver.observe(section);
+      });
+      
+      // FAQ Accordion
+      document.querySelectorAll('.faq-question').forEach(question => {
+        question.addEventListener('click', () => {
+          const faqItem = question.parentElement;
+          const wasOpen = faqItem.classList.contains('open');
+          
+          // Close all FAQs
+          document.querySelectorAll('.faq-item').forEach(item => {
+            item.classList.remove('open');
+          });
+          
+          // If it wasn't open before, open it
+          if (!wasOpen) {
+            faqItem.classList.add('open');
+          }
+          
+          // Check if all FAQs have been opened
+          checkAllFaqsOpened();
+        });
+      });
+      
+      // Check if all FAQs have been opened
+      let allFaqsOpenedBefore = false;
+      function checkAllFaqsOpened() {
+        const totalFaqs = document.querySelectorAll('.faq-item').length;
+        const openedFaqs = document.querySelectorAll('.faq-item.open').length;
+        
+        // If all FAQs have been opened at some point
+        if (openedFaqs === totalFaqs && !allFaqsOpenedBefore) {
+          allFaqsOpenedBefore = true;
+          createConfetti();
+        }
+      }
+      
+      // Confetti animation
+      function createConfetti() {
+        const confettiColors = ['#4caf50', '#ff9800', '#8bc34a', '#2196f3'];
+        
+        for (let i = 0; i < 50; i++) {
+          const confetti = document.createElement('div');
+          confetti.classList.add('confetti');
+          
+          const size = Math.random() * 10 + 5;
+          const borderRadius = Math.random() > 0.5 ? '50%' : '0';
+          const left = Math.random() * window.innerWidth;
+          const colorIndex = Math.floor(Math.random() * confettiColors.length);
+          
+          confetti.style.width = `${size}px`;
+          confetti.style.height = `${size}px`;
+          confetti.style.borderRadius = borderRadius;
+          confetti.style.backgroundColor = confettiColors[colorIndex];
+          confetti.style.left = `${left}px`;
+          confetti.style.top = '-20px';
+          
+          document.body.appendChild(confetti);
+          
+          // Animate confetti
+          const duration = Math.random() * 3 + 2;
+          const delay = Math.random() * 2;
+          
+          confetti.style.animation = `fall ${duration}s ease-in ${delay}s 1 forwards`;
+          confetti.style.opacity = '1';
+          
+          // Add keyframes for falling animation
+          const keyframes = `
+            @keyframes fall {
+              0% {
+                transform: translateY(0) rotate(0);
+                opacity: 1;
+              }
+              100% {
+                transform: translateY(${window.innerHeight}px) rotate(${Math.random() * 360}deg);
+                opacity: 0;
+              }
+            }
+          `;
+          
+          const styleSheet = document.createElement('style');
+          styleSheet.textContent = keyframes;
+          document.head.appendChild(styleSheet);
+          
+          // Remove confetti after animation
+          setTimeout(() => {
+            confetti.remove();
+            styleSheet.remove();
+          }, (duration + delay) * 1000);
+        }
+      }
+      
+      // Form submission effect
+      document.getElementById('returnForm').addEventListener('submit', function(e) {
+        e.preventDefault();
+        
+        // Simulate form submission
+        const submitBtn = this.querySelector('button[type="submit"]');
+        const originalText = submitBtn.textContent;
+        
+        submitBtn.textContent = 'Processing...';
+        submitBtn.disabled = true;
+        
+        setTimeout(() => {
+          submitBtn.textContent = 'Return Requested!';
+          
+          // Create thank you animation
+          createConfetti();
+          
+          // Reset form after delay
+          setTimeout(() => {
+            submitBtn.textContent = originalText;
+            submitBtn.disabled = false;
+            document.getElementById('returnForm').reset();
+          }, 3000);
+        }, 1500);
+      });
+      
+      // Interactive form inputs
+      document.querySelectorAll('input, textarea, select').forEach(input => {
+        input.addEventListener('focus', () => {
+          input.style.transform = 'scale(1.02)';
+        });
+        
+        input.addEventListener('blur', () => {
+          if (!input.value) {
+            input.style.transform = 'scale(1)';
+          }
+        });
+      });
+    });
+  </script>
+</body>
+</html>
