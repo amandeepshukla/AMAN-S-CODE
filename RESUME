@@ -1,0 +1,694 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Aman Deep Shukla - Developer</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            overflow-x: hidden;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        /* Header Animation */
+        
+        .header {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 40px;
+            margin-bottom: 30px;
+            text-align: center;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+            animation: slideDown 1s ease-out;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .header::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: linear-gradient(45deg, transparent, rgba(255, 255, 255, 0.1), transparent);
+            animation: shimmer 3s infinite;
+        }
+        
+        .profile-img {
+            width: 150px;
+            height: 150px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            margin: 0 auto 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 60px;
+            color: white;
+            font-weight: bold;
+            animation: pulse 2s infinite;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+        }
+        
+        .name {
+            font-size: 3em;
+            font-weight: bold;
+            margin-bottom: 10px;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            animation: fadeInUp 1s ease-out 0.2s both;
+        }
+        
+        .title {
+            font-size: 1.5em;
+            color: #666;
+            margin-bottom: 20px;
+            animation: fadeInUp 1s ease-out 0.4s both;
+        }
+        
+        .contact-info {
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+            flex-wrap: wrap;
+            animation: fadeInUp 1s ease-out 0.6s both;
+        }
+        
+        .contact-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            color: #555;
+            transition: transform 0.3s ease;
+        }
+        
+        .contact-item:hover {
+            transform: translateY(-3px);
+            color: #667eea;
+        }
+        /* Section Animations */
+        
+        .section {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 30px;
+            margin-bottom: 30px;
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1);
+            animation: slideInLeft 0.8s ease-out;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        
+        .section:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.15);
+        }
+        
+        .section:nth-child(even) {
+            animation: slideInRight 0.8s ease-out;
+        }
+        
+        .section-title {
+            font-size: 2em;
+            font-weight: bold;
+            margin-bottom: 20px;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            position: relative;
+        }
+        
+        .section-title::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 50px;
+            height: 3px;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            border-radius: 2px;
+            animation: expandWidth 1s ease-out;
+        }
+        /* Skills Animation */
+        
+        .skills-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin-top: 20px;
+        }
+        
+        .skill-category {
+            background: linear-gradient(135deg, #f8f9ff, #e8edff);
+            border-radius: 15px;
+            padding: 20px;
+            text-align: center;
+            transition: transform 0.3s ease;
+            animation: fadeInScale 0.8s ease-out;
+        }
+        
+        .skill-category:hover {
+            transform: scale(1.05) rotateY(5deg);
+        }
+        
+        .skill-list {
+            list-style: none;
+            padding: 0;
+        }
+        
+        .skill-item {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            padding: 8px 16px;
+            margin: 5px 0;
+            border-radius: 20px;
+            display: inline-block;
+            margin-right: 10px;
+            font-size: 0.9em;
+            animation: bounceIn 0.6s ease-out;
+            transition: transform 0.3s ease;
+        }
+        
+        .skill-item:hover {
+            transform: scale(1.1);
+        }
+        /* Projects Animation */
+        
+        .projects-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 25px;
+            margin-top: 20px;
+        }
+        
+        .project-card {
+            background: linear-gradient(135deg, #f8f9ff, #e8edff);
+            border-radius: 15px;
+            padding: 25px;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            animation: slideInUp 0.8s ease-out;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .project-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.4), transparent);
+            transition: left 0.5s ease;
+        }
+        
+        .project-card:hover::before {
+            left: 100%;
+        }
+        
+        .project-card:hover {
+            transform: translateY(-10px) rotateX(5deg);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
+        }
+        
+        .project-title {
+            font-size: 1.3em;
+            font-weight: bold;
+            color: #667eea;
+            margin-bottom: 10px;
+        }
+        
+        .project-tech {
+            color: #888;
+            font-size: 0.9em;
+            margin-bottom: 10px;
+        }
+        
+        .project-link {
+            display: inline-block;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            padding: 8px 16px;
+            border-radius: 20px;
+            text-decoration: none;
+            margin-top: 10px;
+            transition: transform 0.3s ease;
+        }
+        
+        .project-link:hover {
+            transform: scale(1.1);
+        }
+        /* Education Timeline */
+        
+        .timeline {
+            position: relative;
+            padding-left: 30px;
+        }
+        
+        .timeline::before {
+            content: '';
+            position: absolute;
+            left: 15px;
+            top: 0;
+            height: 100%;
+            width: 3px;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            border-radius: 2px;
+        }
+        
+        .timeline-item {
+            position: relative;
+            margin-bottom: 30px;
+            animation: slideInLeft 0.8s ease-out;
+        }
+        
+        .timeline-item::before {
+            content: '';
+            position: absolute;
+            left: -22px;
+            top: 5px;
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            animation: pulse 2s infinite;
+        }
+        
+        .timeline-content {
+            background: linear-gradient(135deg, #f8f9ff, #e8edff);
+            border-radius: 15px;
+            padding: 20px;
+            transition: transform 0.3s ease;
+        }
+        
+        .timeline-content:hover {
+            transform: translateX(10px);
+        }
+        /* Certificates */
+        
+        .certificates-list {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 15px;
+            margin-top: 20px;
+        }
+        
+        .certificate-item {
+            background: linear-gradient(135deg, #f8f9ff, #e8edff);
+            border-radius: 10px;
+            padding: 15px;
+            text-align: center;
+            transition: transform 0.3s ease;
+            animation: fadeInScale 0.6s ease-out;
+        }
+        
+        .certificate-item:hover {
+            transform: scale(1.05) rotateZ(2deg);
+        }
+        /* Animations */
+        
+        @keyframes slideDown {
+            from {
+                transform: translateY(-50px);
+                opacity: 0;
+            }
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+        
+        @keyframes slideInLeft {
+            from {
+                transform: translateX(-50px);
+                opacity: 0;
+            }
+            to {
+                transform: translateX(0);
+                opacity: 1;
+            }
+        }
+        
+        @keyframes slideInRight {
+            from {
+                transform: translateX(50px);
+                opacity: 0;
+            }
+            to {
+                transform: translateX(0);
+                opacity: 1;
+            }
+        }
+        
+        @keyframes slideInUp {
+            from {
+                transform: translateY(30px);
+                opacity: 0;
+            }
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+        
+        @keyframes fadeInUp {
+            from {
+                transform: translateY(20px);
+                opacity: 0;
+            }
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+        
+        @keyframes fadeInScale {
+            from {
+                transform: scale(0.8);
+                opacity: 0;
+            }
+            to {
+                transform: scale(1);
+                opacity: 1;
+            }
+        }
+        
+        @keyframes bounceIn {
+            from {
+                transform: scale(0.3);
+                opacity: 0;
+            }
+            50% {
+                transform: scale(1.05);
+            }
+            to {
+                transform: scale(1);
+                opacity: 1;
+            }
+        }
+        
+        @keyframes pulse {
+            0%,
+            100% {
+                transform: scale(1);
+            }
+            50% {
+                transform: scale(1.05);
+            }
+        }
+        
+        @keyframes shimmer {
+            0% {
+                transform: translateX(-100%);
+            }
+            100% {
+                transform: translateX(100%);
+            }
+        }
+        
+        @keyframes expandWidth {
+            from {
+                width: 0;
+            }
+            to {
+                width: 50px;
+            }
+        }
+        /* Responsive Design */
+        
+        @media (max-width: 768px) {
+            .container {
+                padding: 10px;
+            }
+            .header {
+                padding: 20px;
+            }
+            .name {
+                font-size: 2em;
+            }
+            .contact-info {
+                flex-direction: column;
+                gap: 15px;
+            }
+            .projects-grid {
+                grid-template-columns: 1fr;
+            }
+            .skills-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+        /* Floating Animation */
+        
+        .floating {
+            animation: floating 3s ease-in-out infinite;
+        }
+        
+        @keyframes floating {
+            0%,
+            100% {
+                transform: translateY(0px);
+            }
+            50% {
+                transform: translateY(-10px);
+            }
+        }
+        /* Scroll Animation */
+        
+        .scroll-animate {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: all 0.6s ease-out;
+        }
+        
+        .scroll-animate.animated {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <!-- Header Section -->
+        <div class="header">
+            <div class="profile-img">AS</div>
+            <h1 class="name">Aman Deep Shukla</h1>
+            <p class="title">Full Stack Developer | BCA Student</p>
+            <div class="contact-info">
+                <div class="contact-item"><span>📱</span><span>+91 9557932031</span></div>
+                <div class="contact-item"><span>✉️</span><span>amandeepshukla8979@gmail.com</span></div>
+                <div class="contact-item"><span>📍</span><span>Bareilly,
+Uttar Pradesh</span></div>
+                <div class="contact-item"><span>🔗</span><a href="https://www.linkedin.com/in/amandeep-shukla-09616028a" target="_blank" style="text-decoration: none; color: inherit;">LinkedIn</a></div>
+                <div class="contact-item"><span>💻</span><a href="https://github.com/amandeepshukla" target="_blank" style="text-decoration: none; color: inherit;">GitHub</a></div>
+            </div>
+        </div>
+        <!-- About Section -->
+        <div class="section scroll-animate">
+            <h2 class="section-title">About Me</h2>
+            <p>Highly motivated BCA student with a strong interest in web development, seeking opportunities to apply technical skills in front-end and back-end development. Passionate about building projects like websites and applications, evidenced by
+                hands-on experience in creating interactive portfolios, e-commerce sites, and games.</p>
+        </div>
+        <!-- Skills Section -->
+        <div class="section scroll-animate">
+            <h2 class="section-title">Skills</h2>
+            <div class="skills-grid">
+                <div class="skill-category floating">
+                    <h3>Technical Skills</h3>
+                    <div class="skill-list"><span class="skill-item">HTML</span><span class="skill-item">CSS</span><span class="skill-item">JavaScript</span><span class="skill-item">Python</span><span class="skill-item">Bootstrap</span><span class="skill-item">VS Code</span>
+                        <span
+                            class="skill-item">TryHackMe</span>
+                    </div>
+                </div>
+                <div class="skill-category floating" style="animation-delay: 0.5s;">
+                    <h3>Soft Skills</h3>
+                    <div class="skill-list"><span class="skill-item">Effective Communication</span><span class="skill-item">Version Control</span><span class="skill-item">Time Management</span><span class="skill-item">Logical Reasoning</span><span class="skill-item">Emotional Intelligence</span>
+                        <span
+                            class="skill-item">Adaptability</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- Projects Section -->
+        <div class="section scroll-animate">
+            <h2 class="section-title">Projects</h2>
+            <div class="projects-grid">
+                <div class="project-card">
+                    <h3 class="project-title">Portfolio Website</h3>
+                    <p class="project-tech">HTML, CSS, JavaScript
+                    </p>
+                    <p>Responsive personal portfolio with project showcase and contact form.</p><a href="https://github.com/amandeepshukla/AMAN-S-CODE/blob/main/Portfolio%202.0" target="_blank" class="project-link">View Project</a></div>
+                <div class="project-card">
+                    <h3 class="project-title">E-Commerce Website - Fresh Bajar</h3>
+                    <p class="project-tech">HTML, CSS, Bootstrap, JavaScript
+                    </p>
+                    <p>Functional e-commerce site with product listings and cart functionality.</p><a href="https://github.com/amandeepshukla/AMAN-S-CODE/blob/main/MART" target="_blank" class="project-link">View Project</a></div>
+                <div class="project-card">
+                    <h3 class="project-title">Travel Booking Site</h3>
+                    <p class="project-tech">HTML, CSS, JavaScript
+                    </p>
+                    <p>Intuitive frontend with seamless booking process for comparing and booking tickets.</p><a href="https://github.com/amandeepshukla/AMAN-S-CODE/blob/main/Treval%20site" target="_blank" class="project-link">View Project</a></div>
+                <div
+                    class="project-card">
+                    <h3 class="project-title">Interactive Games</h3>
+                    <p class="project-tech">JavaScript</p>
+                    <p>Number Guessing Game and Rock Paper Scissors with user-friendly interfaces.</p><a href="https://github.com/amandeepshukla/AMAN-S-CODE/blob/main/Number%20Guessing%20Game" target="_blank" class="project-link">View Project</a></div>
+            <div
+                class="project-card">
+                <h3 class="project-title">Blog Site</h3>
+                <p class="project-tech">HTML, CSS, JavaScript
+                </p>
+                <p>Handcrafted blog where creativity meets code, featuring stories and tech adventures.</p><a href="https://github.com/amandeepshukla/AMAN-S-CODE/blob/main/Return%20Policy%20site" target="_blank" class="project-link">View Project</a></div>
+    </div>
+    </div>
+    <!-- Education Section -->
+    <div class="section scroll-animate">
+        <h2 class="section-title">Education</h2>
+        <div class="timeline">
+            <div class="timeline-item">
+                <div class="timeline-content">
+                    <h3>Bachelor of Computer Application</h3>
+                    <p><strong>Invertis University</strong>- Rajau Paraspur, Bareilly
+                    </p>
+                    <p>Currently pursuing</p>
+                </div>
+            </div>
+            <div class="timeline-item">
+                <div class="timeline-content">
+                    <h3>Higher Secondary</h3>
+                    <p><strong>Radha Madhav Public School</strong>- Bareilly</p>
+                    <p>April 2023</p>
+                </div>
+            </div>
+            <div class="timeline-item">
+                <div class="timeline-content">
+                    <h3>Secondary</h3>
+                    <p><strong>Radha Madhav Public School</strong>- Bareilly</p>
+                    <p>April 2021</p>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Certificates Section -->
+    <div class="section scroll-animate">
+        <h2 class="section-title">Certificates</h2>
+        <div class="certificates-list">
+            <div class="certificate-item">
+                <h4>Google Analytics 2024</h4>
+            </div>
+            <div class="certificate-item">
+                <h4>MS Office 365</h4>
+                <p>Word, PowerPoint, Excel
+                </p>
+            </div>
+            <div class="certificate-item">
+                <h4>Three Pillars of Effective Communication</h4>
+                <p>2023</p>
+            </div>
+            <div class="certificate-item">
+                <h4>Six Skills of Positive Professional</h4>
+                <p>2023</p>
+            </div>
+            <div class="certificate-item">
+                <h4>OneDrive for Business</h4>
+                <p>Essential Training, 2020
+                </p>
+            </div>
+            <div class="certificate-item">
+                <h4>Ethical Hacking</h4>
+            </div>
+        </div>
+    </div>
+    </div>
+    <script>
+        // Scroll Animation
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        }
+
+        ;
+        const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('animated');
+                    }
+                });
+            }
+
+            , observerOptions);
+        document.querySelectorAll('.scroll-animate').forEach(el => {
+                observer.observe(el);
+            }
+
+        );
+        // Add stagger animation to skill items
+        document.querySelectorAll('.skill-item').forEach((item, index) => {
+                item.style.animationDelay = `$ {
+        index * 0.1
+    }
+    s`;
+            }
+
+        );
+        // Add stagger animation to project cards
+        document.querySelectorAll('.project-card').forEach((card, index) => {
+                card.style.animationDelay = `$ {
+        index * 0.2
+    }
+    s`;
+            }
+
+        );
+        // Add stagger animation to certificate items
+        document.querySelectorAll('.certificate-item').forEach((item, index) => {
+                item.style.animationDelay = `$ {
+        index * 0.1
+    }
+    s`;
+            }
+
+        );
+        // Smooth scrolling for better UX
+        document.documentElement.style.scrollBehavior = 'smooth';
+        // Add mouse movement parallax effect
+        document.addEventListener('mousemove', (e) => {
+                const cards = document.querySelectorAll('.project-card, .skill-category');
+                const x = e.clientX / window.innerWidth;
+                const y = e.clientY / window.innerHeight;
+                cards.forEach((card, index) => {
+                    const xMove = (x - 0.5) * 20;
+                    const yMove = (y - 0.5) * 20;
+                    card.style.transform += ` translate($ {
+            xMove * 0.5
+        }
+        px, $ {
+            yMove * 0.5
+        }
+        px)`;
+                });
+            }
+
+        );
+    </script>
+</body>
+
+</html>
