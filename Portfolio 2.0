@@ -125,10 +125,6 @@
 
 
 
-/*-----------------------------------*\
-#RESET
-\*-----------------------------------*/
-
 *, *::before, *::after {
 margin: 0;
 padding: 0;
@@ -166,15 +162,6 @@ color: var(--smoky-black);
 html { font-family: var(--ff-poppins); }
 
 body { background: var(--smoky-black); }
-
-
-
-
-
-/*-----------------------------------*\
-#REUSED STYLE
-\*-----------------------------------*/
-
 .sidebar,
 article {
 background: var(--eerie-black-2);
@@ -301,28 +288,11 @@ background: var(--bg-gradient-jet);
 border-radius: inherit;
 z-index: -1;
 }
-
-
-
-
-
-/*-----------------------------------*\
-#MAIN
-\*-----------------------------------*/
-
 main {
 margin: 15px 12px;
 margin-bottom: 75px;
 min-width: 259px;
 }
-
-
-
-
-
-/*-----------------------------------*\
-#SIDEBAR
-\*-----------------------------------*/
 
 .sidebar {
 margin-bottom: 15px;
@@ -456,14 +426,6 @@ font-size: 18px;
 
 .social-item .social-link:hover { color: var(--light-gray); }
 
-
-
-
-
-/*-----------------------------------*\
-#NAVBAR
-\*-----------------------------------*/
-
 .navbar {
 position: fixed;
 bottom: 0;
@@ -496,14 +458,6 @@ transition: color var(--transition-1);
 .navbar-link:focus { color: var(--light-gray-70); }
 
 .navbar-link.active { color: var(--orange-yellow-crayola); }
-
-
-
-
-
-/*-----------------------------------*\
-#ABOUT
-\*-----------------------------------*/
 
 .about .article-title { margin-bottom: 15px; }
 
@@ -766,14 +720,6 @@ transition: var(--transition-1);
 
 .clients-item img:hover { filter: grayscale(0); }
 
-
-
-
-
-/*-----------------------------------*\
-#RESUME
-\*-----------------------------------*/
-
 .article-title { margin-bottom: 30px; }
 
 
@@ -876,14 +822,6 @@ background: var(--text-gradient-yellow);
 height: 100%;
 border-radius: inherit;
 }
-
-
-
-
-
-/*-----------------------------------*\
-#PORTFOLIO
-\*-----------------------------------*/
 
 .filter-list { display: none; }
 
@@ -1036,14 +974,6 @@ font-size: var(--fs-6);
 font-weight: var(--fw-300);
 }
 
-
-
-
-
-/*-----------------------------------*\
-#BLOG
-\*-----------------------------------*/
-
 .blog-posts { margin-bottom: 10px; }
 
 .blog-posts-list {
@@ -1123,14 +1053,6 @@ font-size: var(--fs-6);
 font-weight: var(--fw-300);
 line-height: 1.6;
 }
-
-
-
-
-
-/*-----------------------------------*\
-#CONTACT
-\*-----------------------------------*/
 
 .mapbox {
 position: relative;
@@ -1231,13 +1153,6 @@ cursor: not-allowed;
 
 .form-btn:disabled:hover::before { background: var(--bg-gradient-jet); }
 
-
-
-
-
-/*-----------------------------------*\
-#RESPONSIVE
-\*-----------------------------------*/
 
 /**
 * responsive larger than 450px screen
